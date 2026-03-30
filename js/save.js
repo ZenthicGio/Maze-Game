@@ -7,9 +7,9 @@
  */
 
 const SAVE_SLOT_FILES = {
-    1: "save_0.dat",
-    2: "save_1.dat",
-    3: "save_2.dat"
+    1: "save_0.save",
+    2: "save_1.save",
+    3: "save_2.save"
 };
 
 const LEGACY_SAVE_SLOT_FILES = {
@@ -120,7 +120,7 @@ async function fileExists(path) {
     }
 }
 function getSavedFilename(slotNumber) {
-    return SAVE_SLOT_FILES[slotNumber] ?? "save_0.dat";
+    return SAVE_SLOT_FILES[slotNumber] ?? "save_0.save";
 }
 function getLegacySavedFilename(slotNumber) {
     return LEGACY_SAVE_SLOT_FILES[slotNumber] ?? "save_0.json";
@@ -138,7 +138,7 @@ async function resolveSlotFilenameForLoad(slotNumber) {
 
     return datFile;
 }
-async function saveGame(filename = "save_0.dat") {
+async function saveGame(filename = "save_0.save") {
     await saveData(filename);
 }
 async function saveData(filename) {
@@ -346,7 +346,7 @@ async function loadData(filePath = null) {
         return new Promise((resolve) => {
             const input = document.createElement("input");
             input.type = "file";
-            input.accept = ".dat,.json,application/octet-stream,application/json";
+            input.accept = ".save,.json,application/octet-stream,application/json";
             input.onchange = () => resolve(input.files && input.files[0] ? input.files[0] : null);
             input.click();
         });
@@ -358,7 +358,7 @@ async function loadData(filePath = null) {
         if (!filePath) {
             const selected = await Neutralino.os.showOpenDialog("Apri save", {
                 multiSelections: false,
-                filters: [{ name: "Save", extensions: ["dat", "json"] }]
+                filters: [{ name: "Save", extensions: ["save", "json"] }]
             });
             if (!selected || selected.length === 0) return null;
             filePath = selected[0];

@@ -26,7 +26,7 @@ const pickupCounterEl = document.getElementById("pickupCounter"),
     START_CLICK = document.getElementById("pulsingText");
 
 // Salvataggio
-const SAVE_VERSION = "v5.0.0.0-dev"
+const SAVE_VERSION = "v5.0.1.0"
 
 // Audio
 const shootSound = new Audio("SFX/shot.mp3"),
