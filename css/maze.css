@@ -1,0 +1,427 @@
+/*!
+ * © 2026 ΔΣGIS
+ * All rights reserved.
+ *
+ * This code is the property of the author.
+ * Unauthorized copying, modification, or distribution is strictly prohibited.
+ *
+*/
+body {
+    overflow: hidden;
+    margin: 20px;
+    margin-top: 5px;
+    background-color: gray;
+    font-family: 'IBM DOS VGA 9x16', monospace;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+canvas {
+    border: 1px solid black;
+    outline: none;
+}
+
+#hud {
+    margin-bottom: 5px;
+    font-size: 18px;
+    display: flex;
+    gap: 20px;
+}
+
+div.container {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    outline: none;
+}
+
+.legenda {
+    font-family: 'IBM DOS VGA 9x16', monospace;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    font-size: 18px;
+    width: 190px;
+    height: auto;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+div.legenda::-webkit-scrollbar,
+div.menu-box-help::-webkit-scrollbar {
+    display: none;
+}
+
+.subLegenda {
+    position: relative;
+    display: block;
+    font-size: 16px;
+}
+
+table.subLegenda {
+    border-collapse: collapse;
+    text-align: center;
+}
+
+th,
+td {
+    border: 1px solid darkgray;
+}
+
+img.img {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    left: 130px;
+    top: 20px
+}
+
+div.console {
+    position: absolute;
+}
+
+input.input {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: #0d0;
+    font-family: 'IBM DOS VGA 9x16', monospace;
+    width: 170px;
+    text-align: center;
+}
+
+input::selection {
+    background: #0d0;
+    color: black;
+}
+
+input::placeholder {
+    color: #070;
+}
+
+div.pause-menu {
+    position: absolute;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 11;
+    width: 660px;
+    height: 660px;
+}
+
+div.menu-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: lightgray;
+    width: 360px;
+    height: auto;
+    max-height: 420px;
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 12;
+    text-align: center;
+    font-family: 'IBM DOS VGA 9x16', monospace;
+    font-size: 40px;
+}
+
+div.menu-box-help {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: lightgray;
+    width: 360px;
+    height: auto;
+    padding: 20px;
+    max-height: 600px;
+    overflow-y: auto;
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 12;
+    text-align: center;
+    font-family: 'IBM DOS VGA 9x16', monospace;
+    font-size: 40px;
+}
+
+a.title {
+    position: relative;
+    top: 10px;
+}
+
+div.menu-option {
+    font-family: 'IBM DOS VGA 9x16', monospace;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: auto;
+    height: auto;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+a.option,
+div.option {
+    background-color: #202020;
+    white-space: normal;
+    overflow-wrap: break-word;
+    display: block;
+    position: relative;
+    font-size: 20px;
+    width: 160px;
+    height: auto;
+    border-radius: 10px;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+div.option {
+    cursor: pointer;
+}
+
+.sec {
+    margin-top: 10px;
+}
+
+a.return {
+    background-color: #202030;
+    cursor: pointer;
+}
+
+a.option:hover,
+div.option:hover {
+    filter: brightness(1.1);
+    color: rgb(255, 255, 211);
+}
+
+.option.disabled:hover {
+    filter: brightness(1);
+    color: lightgray;
+}
+
+p.stat-text {
+    font-size: 20px;
+}
+
+div.main-menu {
+    display: block;
+    position: absolute;
+    margin-top: 28px;
+}
+
+div.main-box-menu {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 11;
+    width: 660px;
+    height: 660px;
+}
+
+div.game {
+    display: none;
+    position: absolute;
+}
+
+.option.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+div.ui {
+    display: flex;
+    flex-direction: row;
+}
+
+div.batteryContainer {
+    display: none;
+    flex-direction: row;
+    margin-top: 3px;
+    margin-left: -15px;
+    height: 12px;
+    border-radius: 999px;
+    border: 1px solid black;
+    width: 100px;
+    overflow: hidden
+}
+
+span.bcs {
+    font-size: 10px;
+    position: absolute;
+    margin-top: 0px;
+    text-align: center;
+    width: 100px;
+    color: rgb(20, 20, 20);
+}
+
+div.battery {
+    display: none;
+    border-radius: inherit;
+    width: 0;
+    height: 12px;
+    background-color: rgb(0, 255, 255)
+}
+
+div.slot-row {
+    display: flex;
+    flex-direction: row;
+}
+
+a.delete {
+    width: 25px;
+    height: 25px;
+    margin-left: 10px;
+    background-color: #aa0000;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+a.upgrade {
+    width: 25px;
+    height: 25px;
+    margin-left: 10px;
+    background-color: #00780e;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+a.delete:hover,
+a.upgrade:hover {
+    filter: brightness(1.2)
+}
+
+div.pulse,
+a.pulse {
+    font-size: 20px;
+    color: lightgray;
+    animation: pulseText 3s ease-in-out infinite;
+    cursor: pointer;
+}
+
+a.exit:hover {
+    background-color: #aa2244;
+    color: #223839
+}
+
+.help-pulse-hg {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+    padding: 0 4px;
+    text-shadow: 0 0 8px rgba(255, 255, 220, 0.85);
+}
+
+.help-pulse-hg::before {
+    content: "";
+    position: absolute;
+    inset: 0px -49px;
+    border-radius: 10px;
+    animation: pulseGlow 2.4s ease-in-out infinite;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.help-pulse-hts {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+    padding: 0 4px;
+    text-shadow: 0 0 8px rgba(255, 255, 220, 0.85);
+}
+
+.help-pulse-hts::before {
+    content: "";
+    position: absolute;
+    inset: 0px;
+    border-radius: 10px;
+    animation: pulseGlow 2.4s ease-in-out infinite;
+    z-index: -1;
+    pointer-events: none;
+}
+
+table.health-bar,
+table.stamina-bar,
+table.speed-bar,
+table.bullets-bar,
+table.damage-bar,
+table.bulletsspeed-bar {
+    margin-top: 8.5px;
+    height: 8px;
+    width: 200px;
+    border-collapse: collapse;
+}
+
+table.health-bar {
+    background-color: #002f06
+}
+
+table.stamina-bar {
+    background-color: #48492b
+}
+
+table.speed-bar {
+    background-color: #2b4948
+}
+
+table.bullets-bar {
+    background-color: #01002f
+}
+
+table.damage-bar {
+    background-color: #2f0000
+}
+
+table.bulletsspeed-bar {
+    background-color: #2f2f2f
+}
+
+td.bar {
+    border: 1px solid lightgray
+}
+
+div.flex {
+    display: flex;
+    flex-direction: row;
+}
+
+@keyframes pulseText {
+    0% {
+        opacity: 0.35;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.35;
+    }
+}
+
+@keyframes pulseGlow {
+    0% {
+        filter: blur(0px);
+        background-color: rgba(128, 255, 128, 0)
+    }
+
+    50% {
+        filter: blur(10px);
+        background-color: rgba(128, 255, 128, 0.5)
+    }
+
+    100% {
+        filter: blur(0px);
+        background-color: rgba(128, 255, 128, 0)
+    }
+}

@@ -1,0 +1,83 @@
+<!--
+ * © 2026 ΔΣGIS
+ * All rights reserved.
+ *
+ * This code is the property of the author.
+ * Unauthorized copying, modification, or distribution is strictly prohibited.
+ *
+ * v5.0.0.0-dev
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Maze Escape</title>
+        <link rel="stylesheet" href="css/font.css">
+        <link rel="stylesheet" href="css/maze.css">
+        <link rel="icon" type="image/png" href="icons/appIcon.png">
+    </head>
+
+    <body>
+        <div class="main-menu" id="start-menu">
+            <div class="main-box-menu">
+                <div id="main-menu">
+                    <a class="pulse" id="pulsingText"
+                        onclick="muteHoverUntil = performance.now() + 120; mainMenu()">Click to go on Main Menu</a>
+                </div>
+            </div>
+        </div>
+        <div class="game" id="game">
+            <div tabindex="-1" id="hud">
+                <span id="pickupCounter">Keys: 0/0</span>
+                <span id="score">Score: 0</span>
+                <span id="lvl">Level: 1</span>
+                <span id="ammo">[Ammo: 0</span>
+                <div class="ui">
+                    <div class="batteryContainer" id="batteryContainer">
+                        <span id="batteryContainerSpan" class="bcs">100%</span>
+                        <div id="battery" class="battery"></div>
+                    </div>
+                    <span id="mag">Mag: 0]</span>
+                </div>
+            </div>
+            <div tabindex="-1" class="container">
+                <div tabindex="-1" class="console">
+                    <input type="text" class="input" id="console" spellcheck="false" placeholder="Console" hidden />
+                </div>
+                <canvas></canvas>
+                <div class="pause-menu" id="pause-menu"></div>
+            </div>
+        </div>
+        <!--<script>
+            window.addEventListener("neuDev_reloadApp", (e) => {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+            }, true);
+
+            if (Array.isArray(window.NL_ARGS)) {
+                window.NL_ARGS = window.NL_ARGS.filter(a => a !== "--neu-dev-auto-reload");
+            }
+        </script>-->
+        <script src="js/neutralino.js" defer></script>
+        <script defer>
+            document.addEventListener("DOMContentLoaded", () => {
+                if (typeof Neutralino !== "undefined" && typeof Neutralino.init === "function") Neutralino.init();
+            })
+        </script>
+        <script src="js/options.js" defer></script>
+        <script src="js/utils.js" defer></script>
+        <script src="js/state.js" defer></script>
+        <script src="js/generation.js" defer></script>
+        <script src="js/wall-tile.js" defer></script>
+        <script src="js/render.js" defer></script>
+        <script src="js/ai.js" defer></script>
+        <script src="js/laser-audio.js" defer></script>
+        <script src="js/input.js" defer></script>
+        <script src="js/weapons.js" defer></script>
+        <script src="js/loop.js" defer></script>
+        <script src="js/save.js" defer></script>
+    </body>
+
+</html>
