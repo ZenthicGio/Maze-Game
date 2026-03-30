@@ -392,8 +392,9 @@ function objective(INDEX) {
                 </p>
                 <p class="subLegenda" style="top: -15px">
                     get the End cell.
-                    If enemyes touch you, the score will reset and the level restart.
-                    Player will be teleported to start position.
+                    If enimies touch you, you lose one HP.
+                    If you lose all your HP, the score will reset and the level restart.
+                    Player will be teleported to cell (1, 1).
                 </p>
             </div>
         </div>
