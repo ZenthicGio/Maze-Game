@@ -251,7 +251,7 @@ const modes = [
     "railgun"
 ];
 
-const laserCellBreakMs = 300,
+const laserCellBreakMs = 3000,
     laserCrackbackMsPerSecond = 1400,
     laserHitTime = new Map();
 
