@@ -313,7 +313,7 @@ function stopLaserFiring() {
 function increaseMaxHealth() {
     if (score < (perk.cost.player.health + perk.stats.player.health * 75) || perk.stats.player.health >= 10) return;
     perkSpentScore += perk.cost.player.health + perk.stats.player.health * 75;
-    
+
     perk.stats.player.health++;
     playerStats();
     refreshScore();
@@ -357,7 +357,7 @@ function increaseBulletsSpeed() {
     refreshScore();
 }
 function refreshScore() {
-    const baseScore = scoreMod * ((scoreKills * 10) + (keyScore * 3));
+    const baseScore = scoreMod * ((scoreKills * 10) + (keyScore * 3) + levelCompleted);
     score = Math.max(0, baseScore - perkSpentScore);
     scores.textContent = "Score: " + score;
     return score;
@@ -375,4 +375,39 @@ function syncPlayerHealth() {
 function respawnTimerBlock(timer, length = timer) {
     respawnTimer = timer;
     tl = length;
+}
+function stackLimit(name) {
+    if (name === "battery") return 15;
+    if (name === "magazine") return 10;
+    if (name === "medkit") return 20;
+    return Infinity;
+}
+function inventoryManager(item) {
+    const maxStack = stackLimit(item.name);
+
+    for (let i = 0; i < inventory.length; i++) {
+        if (inventory[i] && inventory[i].name === item.name) {
+            const qty = inventory[i].quantity ?? 1;
+
+            if (qty < maxStack) {
+                inventory[i].quantity = qty + 1;
+                if (item.name === "magazine") syncInventoryMagazine();
+                return true;
+            }
+        }
+    }
+    for (let i = 0; i < inventory.length; i++) {
+        if (inventory[i] === null) {
+            inventory[i] = { ...item, quantity: 1 };
+            if (item.name === "magazine") syncInventoryMagazine();
+            return true;
+        }
+    }
+    return false;
+}
+function syncInventoryMagazine() {
+    const magSlot = inventory.find(
+        slot => slot && typeof slot.name === "string" && slot.name.toLowerCase() === "magazine"
+    );
+    magazine = magSlot ? magSlot.quantity : 0;
 }

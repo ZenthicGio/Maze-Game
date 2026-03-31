@@ -16,23 +16,56 @@ canvas.addEventListener("contextmenu", function (e) {
 });
 let isPauseMenu = false;
 let isStatsMenu = false;
+let isInventoryMenu = false;
 document.addEventListener("keydown", e => {
 
     if (e.repeat) return;
     const isPauseKey = e.code === "KeyP" || e.code === "Escape";
     const cKey = e.code === "KeyC";
+    const iKey = e.code === "KeyI";
+    if (isConsoleOn) {
+        if (e.code === "Escape") {
+            resume();
+            isConsoleOn = false;
+            cmd.hidden = true;
+            return;
+        }
+        if (e.code !== "Enter") return;
+    }
+    if (iKey && !isMainMenu && !isPauseMenu) {
+        if (isInventoryMenu) {
+            resume();
+            return;
+        }
+
+        // Switch Stats -> Inventory
+        isStatsMenu = false;
+        playerStatsBool = false;
+
+        isInventory = true;
+        isInventoryMenu = true;
+        isPaused = true;
+        playerInventory();
+        return;
+    }
+
     if (cKey && !isMainMenu && !isPauseMenu) {
+        if (isStatsMenu) {
+            resume();
+            return;
+        }
+
+        // Switch Inventory -> Stats
+        isInventory = false;
+        isInventoryMenu = false;
+
         playerStatsBool = true;
         isStatsMenu = true;
-        if (!isPaused) {
-            isPaused = true;
-            playerStats();
-        } else if (cKey && playerStatsBool && isStatsMenu) {
-            isStatsMenu = false
-            playerStatsBool = false;
-            isPaused = false
-        }
+        isPaused = true;
+        playerStats();
+        return;
     }
+
     if (e.code === "ShiftLeft" || e.code === "ShiftRight") {
         if (command.unlimitedStamina || stamina.length > 0.001) isRunning = true;
         else isRunning = false;
@@ -40,6 +73,10 @@ document.addEventListener("keydown", e => {
 
     if (isPauseKey && !isConsoleOn) { // Keydown per la pausa del gioco (p, P o Esc)
         if (isStatsMenu) {
+            resume();
+            return;
+        }
+        if (isInventoryMenu) {
             resume();
             return;
         }
@@ -52,6 +89,7 @@ document.addEventListener("keydown", e => {
             keys[e.code] = false;
             if (isPaused) pauseMenu();
             playerStatsBool = false;
+            isInventory = false
             return;
         }
     }
@@ -111,7 +149,7 @@ document.addEventListener("keydown", e => {
             } else if (mode === "laser") {
                 if (laserBattery > 0) {
                     startLaserFiring()
-                } else if (laserBattery <= 0){
+                } else if (laserBattery <= 0) {
                     stopLaserFiring()
                 }
             }
@@ -123,7 +161,7 @@ document.addEventListener("keyup", e => {
     if (e.code === "ShiftLeft" || e.code === "ShiftRight") {
         isRunning = !!(keys["ShiftLeft"] || keys["ShiftRight"]);
     }
-    if (e.key === " " && wasdonly) {
+    if (e.code === "Space" && wasdonly) {
         canShoot = true;
         if (isHolding) stopLaserFiring();
         else isHolding = false;
@@ -142,6 +180,8 @@ canvas.addEventListener("mousedown", e => {
     // Click LMB = 0
     // Click MMB = 1
     // Click RMB = 2
+    if (isConsoleOn) return;
+
     if (e.button === 2) {
         if (wasddirectionmouseaim || mousedirection) {
             if (isHolding) stopLaserFiring();
@@ -160,7 +200,7 @@ canvas.addEventListener("mousedown", e => {
             if (mode === "laser") {
                 if (laserBattery > 0) {
                     startLaserFiring()
-                } else if (laserBattery <= 0 && isHolding){
+                } else if (laserBattery <= 0 && isHolding) {
                     stopLaserFiring()
                 }
             } else {
@@ -171,6 +211,8 @@ canvas.addEventListener("mousedown", e => {
     }
 });
 document.addEventListener("mouseup", e => {
+    if (isConsoleOn) return;
+
     if (e.button === 0 && (wasddirectionmouseaim || mousedirection)) {
         canShoot = true;
         if (isHolding) stopLaserFiring();

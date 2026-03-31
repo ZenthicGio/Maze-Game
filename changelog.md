@@ -562,3 +562,15 @@ Change:
 
 Fix:
   -If railgun was active, laser mode did not display battery percentage.
+
+________________________________________V5.0.1.0_________________________________________
+
+Change:
+  -Saves now save files in .save
+
+________________________________________V5.1.0.0_________________________________________
+
+Add:
+  -Player Inventory.
+  -Enemies now drop items.
+  -Completing a level will recive some scores. Values change on difficulty.

@@ -287,6 +287,17 @@ async function saveData(filename) {
             bulletsSpeed: perk.stats.bullets.speed,
         },
 
+        inventoryData: {
+            slots: inventory.map(slot =>
+                slot
+                    ? {
+                        name: slot.name,
+                        quantity: slot.quantity ?? 1
+                    }
+                    : null
+            )
+        },
+
         goalState: {
             active: goalActive
         }
@@ -472,40 +483,40 @@ function applyData(data) {
     }
 
     if (data.difficulty) {
-    diff_speed = data.difficulty.diff_speed ?? diff_speed;
-    diff_enemy_num = data.difficulty.diff_enemy_num ?? diff_enemy_num;
-    md = data.difficulty.md ?? md;
-    enemyRespawnDelay = data.difficulty.enemyRespawnDelay ?? enemyRespawnDelay;
-    reloadTime = data.difficulty.reloadTime ?? reloadTime;
-    safe = data.difficulty.safe ?? safe;
+        diff_speed = data.difficulty.diff_speed ?? diff_speed;
+        diff_enemy_num = data.difficulty.diff_enemy_num ?? diff_enemy_num;
+        md = data.difficulty.md ?? md;
+        enemyRespawnDelay = data.difficulty.enemyRespawnDelay ?? enemyRespawnDelay;
+        reloadTime = data.difficulty.reloadTime ?? reloadTime;
+        safe = data.difficulty.safe ?? safe;
 
-    if (data.difficulty.railgun) {
-        railgun.cooldownLevels =
-            data.difficulty.railgun.cooldownLevels ?? railgun.cooldownLevels;
-        railgun.maxShots =
-            data.difficulty.railgun.maxShots ?? railgun.maxShots;
-    }
-
-    if (data.difficulty.perkCost) {
-        if (data.difficulty.perkCost.player) {
-            perk.cost.player.health =
-                data.difficulty.perkCost.player.health ?? perk.cost.player.health;
-            perk.cost.player.stamina =
-                data.difficulty.perkCost.player.stamina ?? perk.cost.player.stamina;
-            perk.cost.player.speed =
-                data.difficulty.perkCost.player.speed ?? perk.cost.player.speed;
+        if (data.difficulty.railgun) {
+            railgun.cooldownLevels =
+                data.difficulty.railgun.cooldownLevels ?? railgun.cooldownLevels;
+            railgun.maxShots =
+                data.difficulty.railgun.maxShots ?? railgun.maxShots;
         }
 
-        if (data.difficulty.perkCost.bullets) {
-            perk.cost.bullets.counter =
-                data.difficulty.perkCost.bullets.counter ?? perk.cost.bullets.counter;
-            perk.cost.bullets.damage =
-                data.difficulty.perkCost.bullets.damage ?? perk.cost.bullets.damage;
-            perk.cost.bullets.speed =
-                data.difficulty.perkCost.bullets.speed ?? perk.cost.bullets.speed;
+        if (data.difficulty.perkCost) {
+            if (data.difficulty.perkCost.player) {
+                perk.cost.player.health =
+                    data.difficulty.perkCost.player.health ?? perk.cost.player.health;
+                perk.cost.player.stamina =
+                    data.difficulty.perkCost.player.stamina ?? perk.cost.player.stamina;
+                perk.cost.player.speed =
+                    data.difficulty.perkCost.player.speed ?? perk.cost.player.speed;
+            }
+
+            if (data.difficulty.perkCost.bullets) {
+                perk.cost.bullets.counter =
+                    data.difficulty.perkCost.bullets.counter ?? perk.cost.bullets.counter;
+                perk.cost.bullets.damage =
+                    data.difficulty.perkCost.bullets.damage ?? perk.cost.bullets.damage;
+                perk.cost.bullets.speed =
+                    data.difficulty.perkCost.bullets.speed ?? perk.cost.bullets.speed;
+            }
         }
     }
-}
 
     if (data.perk) {
         perk.stats.player.health = data.perk.health ?? perk.stats.player.health;
@@ -517,22 +528,22 @@ function applyData(data) {
     }
 
     if (data.combat) {
-    magazine = data.combat.magazine ?? magazine;
-    bulletsMag = data.combat.bulletsMag ?? bulletsMag;
-    laserBattery = data.combat.laserBattery ?? laserBattery;
-    modeIndex = data.combat.modeIndex ?? modeIndex;
+        magazine = data.combat.magazine ?? magazine;
+        bulletsMag = data.combat.bulletsMag ?? bulletsMag;
+        laserBattery = data.combat.laserBattery ?? laserBattery;
+        modeIndex = data.combat.modeIndex ?? modeIndex;
 
-    if (data.combat.railgun) {
-        railgun.pickup = data.combat.railgun.pickup
-            ? { row: data.combat.railgun.pickup.row, col: data.combat.railgun.pickup.col }
-            : null;
-        railgun.activeByPickup = data.combat.railgun.activeByPickup ?? railgun.activeByPickup;
-        railgun.shotsLeft = data.combat.railgun.shotsLeft ?? railgun.shotsLeft;
-        railgun.pendingDisable = data.combat.railgun.pendingDisable ?? railgun.pendingDisable;
-        railgun.nextSpawnLevel = data.combat.railgun.nextSpawnLevel ?? railgun.nextSpawnLevel;
-        railgun.prevBulletCollisionWall = data.combat.railgun.prevBulletCollisionWall ?? railgun.prevBulletCollisionWall;
+        if (data.combat.railgun) {
+            railgun.pickup = data.combat.railgun.pickup
+                ? { row: data.combat.railgun.pickup.row, col: data.combat.railgun.pickup.col }
+                : null;
+            railgun.activeByPickup = data.combat.railgun.activeByPickup ?? railgun.activeByPickup;
+            railgun.shotsLeft = data.combat.railgun.shotsLeft ?? railgun.shotsLeft;
+            railgun.pendingDisable = data.combat.railgun.pendingDisable ?? railgun.pendingDisable;
+            railgun.nextSpawnLevel = data.combat.railgun.nextSpawnLevel ?? railgun.nextSpawnLevel;
+            railgun.prevBulletCollisionWall = data.combat.railgun.prevBulletCollisionWall ?? railgun.prevBulletCollisionWall;
+        }
     }
-}
 
     if (data.pickups) {
         if (Array.isArray(data.pickups.keys)) {
@@ -556,6 +567,19 @@ function applyData(data) {
             ? data.pickups.meds.map(m => ({ row: m.row, col: m.col }))
             : [];
     }
+    if (data.inventoryData && Array.isArray(data.inventoryData.slots)) {
+        inventory = data.inventoryData.slots.map(slot => {
+            if (slot === null) return null;
+            return {
+                name: slot.name,
+                quantity: slot.quantity ?? 1
+            };
+        });
+    } else {
+        inventory = new Array(30).fill(null);
+    }
+
+    syncInventoryMagazine();
 
     if (data.enemiesState && Array.isArray(data.enemiesState.enemies)) {
         enemyRespawnQueue = Array.isArray(data.enemiesState.enemyRespawnQueue)

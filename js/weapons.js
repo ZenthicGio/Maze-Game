@@ -177,12 +177,26 @@ function laserShoot() {
 }
 function reload() { // Gestisce l'autoricarica dell'arma
     if (isReloading) return;
+
+    syncInventoryMagazine();
     if (magazine <= 0) return;
+
+    const magSlotIndex = inventory.findIndex(
+        slot => slot &&
+            typeof slot.name === "string" &&
+            slot.name.toLowerCase() === "magazine"
+    );
+    if (magSlotIndex === -1) return;
+
     magPickupSound.currentTime = 0;
     magPickupSound.playbackRate = 1;
     magPickupSound.play();
 
-    magazine--;
+    inventory[magSlotIndex].quantity--;
+    if (inventory[magSlotIndex].quantity <= 0) inventory[magSlotIndex] = null;
+
+    syncInventoryMagazine();
+
     isReloading = true;
-    reloadTimer = reloadTime
+    reloadTimer = reloadTime;
 }

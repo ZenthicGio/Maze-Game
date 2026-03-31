@@ -7,10 +7,14 @@
  */
 
 function difficulty(type) {// Seleziona la difficoltÃ  modificando la velocitÃ  dei nemici
-    const diff = document.getElementById("diff");
+
+    keyScore = 0;
+    scoreKills = 0;
+    perkSpentScore = 0;
+    levelCompleted = 0;
+    refreshScore();
 
     if (type === "easy") {
-        diff.textContent = "Easy";
         diff_speed = 0.8;
         diff_enemy_num = 1;
         scoreMod = 1;
@@ -32,10 +36,10 @@ function difficulty(type) {// Seleziona la difficoltÃ  modificando la velocit�
         perk.stats.bullets.counter = 0;
         perk.stats.bullets.damage = 0;
         perk.stats.bullets.speed = 0;
+        levelCompleteReward = 100;
         generateMaze();
     }
     if (type === "normal") {
-        diff.textContent = "Normal";
         diff_speed = 1;
         diff_enemy_num = 4;
         scoreMod = 2;
@@ -57,10 +61,10 @@ function difficulty(type) {// Seleziona la difficoltÃ  modificando la velocit�
         perk.stats.bullets.counter = 0;
         perk.stats.bullets.damage = 0;
         perk.stats.bullets.speed = 0;
+        levelCompleteReward = 200
         generateMaze();
     }
     if (type === "hard") {
-        diff.textContent = "Hard";
         diff_speed = 1.2;
         diff_enemy_num = 5;
         scoreMod = 4;
@@ -82,10 +86,10 @@ function difficulty(type) {// Seleziona la difficoltÃ  modificando la velocit�
         perk.stats.bullets.counter = 0;
         perk.stats.bullets.damage = 0;
         perk.stats.bullets.speed = 0;
+        levelCompleteReward = 400
         generateMaze();
     }
     if (type === "extreme") {
-        diff.textContent = "Extreme";
         diff_speed = 1.5;
         diff_enemy_num = 7;
         scoreMod = 8;
@@ -107,12 +111,16 @@ function difficulty(type) {// Seleziona la difficoltÃ  modificando la velocit�
         perk.stats.bullets.counter = 0;
         perk.stats.bullets.damage = 0;
         perk.stats.bullets.speed = 0;
+        levelCompleteReward = 800
         generateMaze();
     }
+    bs = 4 + perk.stats.bullets.speed * 0.5;
+    player.speed = 1.2 + (perk.stats.player.speed / 10);
     railgun.nextSpawnLevel = levels + railgun.cooldownLevels;
     for (let enemy of enemies) {
         enemy.speed = diff_speed;
     }
+    refreshScore();
 }
 function wasdOnly(deltaTime) {
     let dirX = 0;
@@ -269,6 +277,12 @@ function resume() {
     playerStatsBool = false;
     isPaused = false;
     isPauseMenu = false;
+    isInventory = false;
+    isInventoryMenu = false;
+    PAUSE_MENU.style.display = "none";
+    PAUSE_MENU.innerHTML = "";
+    INVENTORY.style.display = "none";
+    INVENTORY.innerHTML = "";
 }
 function keysOption(INDEX) {
     let menuTypeChange = isPaused && !isMainMenu ? "settings(PAUSE_MENU)" : "settings(MAIN_MENU)";
@@ -313,7 +327,11 @@ function keysOption(INDEX) {
                     </tr>
                     <tr>
                         <td>Perk Tab</td>
-                        <td>c</td>
+                        <td>C</td>
+                    </tr>
+                    <tr>
+                        <td>Inventory</td>
+                        <td>I</td>
                     </tr>
                     <tr>
                         <td>Shoot</td>
@@ -542,6 +560,7 @@ function settings(INDEX) {
 }
 function playerStats() {
     refreshScore();
+    INVENTORY.style.display = "none";
     PAUSE_MENU.style.display = "flex";
     PAUSE_MENU.innerHTML = `
     <div class="menu-box">
@@ -696,32 +715,120 @@ function playerStats() {
     const hudBulletsSpeed = document.getElementById("bullets-speed");
 
     btnH.style.display = (score >= perk.cost.player.health + perk.stats.player.health * 75 && perk.stats.player.health < 10) ? "block" : "none"; //
-    hudHealth.style.color = (score >= perk.cost.player.health + perk.stats.player.health * 75 && perk.stats.player.health < 10) ? "green" : "red";
+    hudHealth.style.color = (score >= perk.cost.player.health + perk.stats.player.health * 75 && perk.stats.player.health < 10) ? "rgb(0,255,0)" : "rgb(255,0,0)";
     hudHealth.textContent = perk.stats.player.health < 10 ? `${score}/${perk.cost.player.health + perk.stats.player.health * 75}` : "MAX";
 
     btnS.style.display = (score >= perk.cost.player.stamina + perk.stats.player.stamina * 75 && perk.stats.player.stamina < 10) ? "block" : "none"; //
-    hudStamina.style.color = (score >= perk.cost.player.stamina + perk.stats.player.stamina * 75 && perk.stats.player.stamina < 10) ? "green" : "red";
+    hudStamina.style.color = (score >= perk.cost.player.stamina + perk.stats.player.stamina * 75 && perk.stats.player.stamina < 10) ? "rgb(0,255,0)" : "rgb(255,0,0)";
     hudStamina.textContent = perk.stats.player.stamina < 10 ? `${score}/${perk.cost.player.stamina + perk.stats.player.stamina * 75}` : "MAX";
 
     btnPS.style.display = (score >= perk.cost.player.speed + perk.stats.player.speed * 90 && perk.stats.player.speed < 5) ? "block" : "none"; // total 7700
-    hudSpeed.style.color = (score >= perk.cost.player.speed + perk.stats.player.speed * 90 && perk.stats.player.speed < 5) ? "green" : "red";
+    hudSpeed.style.color = (score >= perk.cost.player.speed + perk.stats.player.speed * 90 && perk.stats.player.speed < 5) ? "rgb(0,255,0)" : "rgb(255,0,0)";
     hudSpeed.textContent = perk.stats.player.speed < 5 ? `${score}/${perk.cost.player.speed + perk.stats.player.speed * 90}` : "MAX";
 
     btnB.style.display = (score >= perk.cost.bullets.counter + perk.stats.bullets.counter * 85 && perk.stats.bullets.counter < 10) ? "block" : "none"; // total 6600
-    hudBullets.style.color = (score >= perk.cost.bullets.counter + perk.stats.bullets.counter * 85 && perk.stats.bullets.counter < 10) ? "green" : "red";
+    hudBullets.style.color = (score >= perk.cost.bullets.counter + perk.stats.bullets.counter * 85 && perk.stats.bullets.counter < 10) ? "rgb(0,255,0)" : "rgb(255,0,0)";
     hudBullets.textContent = perk.stats.bullets.counter < 10 ? `${score}/${perk.cost.bullets.counter + perk.stats.bullets.counter * 85}` : "MAX";
 
     btnD.style.display = (score >= perk.cost.bullets.damage && perk.stats.bullets.damage < 1) ? "block" : "none";
-    hudDamage.style.color = (score >= perk.cost.bullets.damage && perk.stats.bullets.damage < 1) ? "green" : "red";
+    hudDamage.style.color = (score >= perk.cost.bullets.damage && perk.stats.bullets.damage < 1) ? "rgb(0,255,0)" : "rgb(255,0,0)";
     hudDamage.textContent = perk.stats.bullets.damage < 1 ? `${score}/${perk.cost.bullets.damage}` : "MAX";
 
     btnBS.style.display = (score >= perk.cost.bullets.speed + perk.stats.bullets.speed * 95 && perk.stats.bullets.speed < 10) ? "block" : "none";
-    hudBulletsSpeed.style.color = (score >= perk.cost.bullets.speed + perk.stats.bullets.speed * 95 && perk.stats.bullets.speed < 10) ? "green" : "red";
+    hudBulletsSpeed.style.color = (score >= perk.cost.bullets.speed + perk.stats.bullets.speed * 95 && perk.stats.bullets.speed < 10) ? "rgb(0,255,0)" : "rgb(255,0,0)";
     hudBulletsSpeed.textContent = perk.stats.bullets.speed < 10 ? `${score}/${perk.cost.bullets.speed + perk.stats.bullets.speed * 95}` : "MAX";
 
     soundEvent();
 }
+function playerInventory() {
+    PAUSE_MENU.style.display = "none";
+    INVENTORY.style.display = "flex";
+    INVENTORY.innerHTML = `
+    <div class="menu-inventory">
+        <a class="title">Inventory</a><br>
+        <div class="inventory-option">
+            <div class="grid" id="grid"></div>
+        </div>
+    </div>`;
+    const grid = document.getElementById("grid");
+    grid.style.width = "600px";
+    grid.style.height = "180px";
+    grid.innerHTML = "";
+    grid.style.gridTemplateColumns = `repeat(10, 60px)`;
+
+    for (let i = 0; i < 30; i++) {
+        const cell = document.createElement("div");
+        const slot = inventory[i] ?? null;
+        cell.dataset.slot = i;
+        cell.classList.add("cell");
+        cell.style.width = "60px";
+        cell.style.height = "60px";
+        if (slot) {
+            const itemName = typeof slot.name === "string" ? slot.name.toLowerCase() : "";
+            const itemQty = slot.quantity ? slot.quantity : 1;
+
+            const itemIconMap = {
+                magazine: "icons/magazine.png",
+                battery: "icons/battery.png",
+                medkit: "icons/medkit.png"
+            };
+
+            const itemIcon = itemIconMap[itemName] || "icons/appIcon.png";
+
+            cell.innerHTML = `
+                <img class="cell-icon" src="${itemIcon}">
+                <span class="cell-qty">${itemQty}</span>
+            `;
+        }
+        grid.appendChild(cell);
+    }
+    grid.addEventListener("click", (e) => {
+        const cell = e.target.closest(".cell");
+        if (!cell || !grid.contains(cell)) return;
+
+        const slotIndex = Number(cell.dataset.slot);
+        if (Number.isNaN(slotIndex)) return;
+
+        useInventorySlot(slotIndex);
+    })
+}
+function useInventorySlot(slotIndex) {
+    const slot = inventory[slotIndex];
+    if (!slot) return;
+
+    const itemName = typeof slot.name === "string" ? slot.name.toLowerCase() : "";
+    let used = false;
+
+    if (itemName === "medkit") {
+        if (player.hit > 0) player.hit--;
+        medSound.currentTime = 0;
+        medSound.playbackRate = 1.5;
+        medSound.play();
+        used = true;
+    } else if (itemName === "battery") {
+        if (laserBattery < 100) {
+            laserBattery = 100;
+            batteryPickupSound.currentTime = 0;
+            batteryPickupSound.playbackRate = 1;
+            batteryPickupSound.play();
+            used = true;
+        }
+    } else if (itemName === "magazine") {
+        const wasReloading = isReloading;
+        reload(); // consuma dallo stack solo se parte davvero il reload
+        if (!wasReloading && isReloading) playerInventory();
+        return;
+    }
+
+    if (!used) return;
+
+    slot.quantity--;
+    if (slot.quantity <= 0) inventory[slotIndex] = null;
+
+    playerInventory(); // refresh UI
+}
 function pauseMenu() {
+    INVENTORY.style.display = "none";
     PAUSE_MENU.style.display = "flex";
     PAUSE_MENU.innerHTML = `
         <div class="menu-box" id="resume">

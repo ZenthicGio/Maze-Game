@@ -13,6 +13,13 @@ function updateBullets(deltaTime) { // Aggiorna i proiettili
         const enemyToRemove = enemies[index];
         if (!enemyToRemove) return;
         if (noiseOwner === enemyToRemove) noiseOwner = null;
+        const row = Math.floor(enemyToRemove.y / cell_size)
+        const col = Math.floor(enemyToRemove.x / cell_size)
+        let rk = Math.random();
+        if (rk < 0.15) batteries.push({ row: row, col: col}); // 15% batterie (0.15 → 0.25)
+        else if (rk < 0.5) magazines.push({ row: row, col: col}); // +10% caricatori (0.15 → 0.25)
+        else if (rk < 0.75) meds.push({ row: row, col: col}); // 25% medkit (0.5 → 0.75)
+        else { };
         enemies.splice(index, 1);
     };
 
@@ -123,7 +130,7 @@ function updateBullets(deltaTime) { // Aggiorna i proiettili
                         killSound.currentTime = 0;
                         killSound.play();
 
-                        removeEnemyAt(j);
+                        removeEnemyAt(j, enemy);
                         totalEnemiesKilled++;
                         scoreKills++;
                         enemyRespawnQueue.push(enemyRespawnDelay);
@@ -340,7 +347,7 @@ function update(currentTime) { // Aggiorna movimento del player ed altro
             keyScore++;
             refreshScore();
 
-            // Se non ci sono pi� chiavi allora attivaa il goal
+            // Se non ci sono più chiavi allora attivaa il goal
             if (pickupRemaining <= 0) {
                 goalActive = true;
             }
@@ -354,9 +361,10 @@ function update(currentTime) { // Aggiorna movimento del player ed altro
             magPickupSound.currentTime = 0;
             magPickupSound.playbackRate = 2;
             magPickupSound.play();
-            magazines.splice(i, 1);
             magazine++;
             if (bulletsMag <= 0 && !railgun.activeByPickup) reload();
+            else inventoryManager({name: "magazine"});
+            magazines.splice(i, 1);
         }
     }
 
@@ -366,8 +374,11 @@ function update(currentTime) { // Aggiorna movimento del player ed altro
             batteryPickupSound.currentTime = 0;
             batteryPickupSound.playbackRate = 1;
             batteryPickupSound.play();
+            if (laserBattery <= 50) {
+                laserBattery = 100;
+                batteries.splice(i, 1);
+            } else inventoryManager({name: "battery"});
             batteries.splice(i, 1);
-            laserBattery = 100;
         }
     }
 
@@ -377,8 +388,9 @@ function update(currentTime) { // Aggiorna movimento del player ed altro
             medSound.currentTime = 0;
             medSound.playbackRate = 1.5;
             medSound.play();
+            if (player.hit > 0) player.hit--;
+            else if (player.hit <= 0) inventoryManager({name: "medkit"});
             meds.splice(i, 1);
-            player.hit--;
         }
     }
 
@@ -412,6 +424,8 @@ function update(currentTime) { // Aggiorna movimento del player ed altro
         s.currentTime = 0;
         s.play();
         levels++
+        levelCompleted += levelCompleteReward;
+        refreshScore();
         generateMaze();
     }
 
@@ -430,25 +444,21 @@ function update(currentTime) { // Aggiorna movimento del player ed altro
     lvl.textContent = "Level: " + levels;
     if (modeIndex === 2) {
         ammo.textContent = "[Ammo: RG " + railgun.shotsLeft + "]";
-    } else if (modeIndex === 1) {
-        ammo.textContent = "[Laser Mode"
-    } else {
-        ammo.textContent = "[Ammo: " + bulletsMag;
-    }
-    if (modeIndex === 2) {
         mag.textContent = "";
         battery.style.display = "none";
         batteryContainer.style.display = "none"
     } else if (modeIndex === 1) {
+        ammo.textContent = "[Laser Mode"
         mag.textContent = "]";
         batteryContainer.style.display = "flex";
         batteryContainerSpan.textContent = Math.trunc(laserBattery) + "%";
         battery.style.display = "inline-block";
         battery.style.width = `${laserBattery}px`;
     } else {
+        mag.textContent = "";
+        ammo.textContent = "[Ammo: " + bulletsMag + "]";
         battery.style.display = "none";
         batteryContainer.style.display = "none";
-        mag.textContent = "Mag: " + magazine + "]";
     }
     if (noiseEvent) {
         noiseEvent.timer -= deltaTime;

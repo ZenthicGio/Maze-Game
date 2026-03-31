@@ -6,8 +6,6 @@
  * Unauthorized copying, modification, or distribution is strictly prohibited.
  */
 
-const html = String.raw;
-
 const pickupCounterEl = document.getElementById("pickupCounter"),
     scores = document.getElementById("score"),
     lvl = document.getElementById("lvl"),
@@ -23,10 +21,11 @@ const pickupCounterEl = document.getElementById("pickupCounter"),
     PAUSE_MENU = document.getElementById("pause-menu"),
     GAME = document.getElementById("game"),
     START_MENU = document.getElementById("start-menu"),
-    START_CLICK = document.getElementById("pulsingText");
+    START_CLICK = document.getElementById("pulsingText"),
+    INVENTORY = document.getElementById("inventory");
 
 // Salvataggio
-const SAVE_VERSION = "v5.0.1.0"
+const SAVE_VERSION = "v5.1.0.0"
 
 // Audio
 const shootSound = new Audio("SFX/shot.mp3"),
@@ -108,6 +107,8 @@ let command = {
 }
 
 // Player
+let inventory = new Array(30).fill(null);
+
 let perk = {
     stats: {
         player: {
@@ -230,7 +231,7 @@ let levels = 1,
     perkSpentScore = 0,
     isPaused = true,
     isMainMenu = true,
-    choice = isPaused && !isMainMenu;
+    isInventory = false,
     totalPickupsCollected = 0,
     keyScore = 0,
     totalEnemiesKilled = 0,
@@ -239,7 +240,9 @@ let levels = 1,
     deads = 0,
     totalDeads = 0,
     score,
-    totalShots = 0;
+    totalShots = 0,
+    levelCompleted = 0,
+    levelCompleteReward = 100;
 
 // Weapons
 const modes = [
@@ -248,7 +251,7 @@ const modes = [
     "railgun"
 ];
 
-const laserCellBreakMs = 3000,
+const laserCellBreakMs = 300,
     laserCrackbackMsPerSecond = 1400,
     laserHitTime = new Map();
 
