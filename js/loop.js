@@ -16,9 +16,9 @@ function updateBullets(deltaTime) { // Aggiorna i proiettili
         const row = Math.floor(enemyToRemove.y / cell_size)
         const col = Math.floor(enemyToRemove.x / cell_size)
         let rk = Math.random();
-        if (rk < 0.15) batteries.push({ row: row, col: col}); // 15% batterie (0.15 → 0.25)
-        else if (rk < 0.5) magazines.push({ row: row, col: col}); // +10% caricatori (0.15 → 0.25)
-        else if (rk < 0.75) meds.push({ row: row, col: col}); // 25% medkit (0.5 → 0.75)
+        if (rk < 0.15) batteries.push({ row: row, col: col }); // 15% batterie (0.15 → 0.25)
+        else if (rk < 0.5) magazines.push({ row: row, col: col }); // +10% caricatori (0.15 → 0.25)
+        else if (rk < 0.75) meds.push({ row: row, col: col }); // 25% medkit (0.5 → 0.75)
         else { };
         enemies.splice(index, 1);
     };
@@ -361,9 +361,10 @@ function update(currentTime) { // Aggiorna movimento del player ed altro
             magPickupSound.currentTime = 0;
             magPickupSound.playbackRate = 2;
             magPickupSound.play();
-            magazine++;
+            inventoryManager({ name: "magazine" }); // sempre
+
             if (bulletsMag <= 0 && !railgun.activeByPickup) reload();
-            else inventoryManager({name: "magazine"});
+
             magazines.splice(i, 1);
         }
     }
@@ -377,7 +378,7 @@ function update(currentTime) { // Aggiorna movimento del player ed altro
             if (laserBattery <= 50) {
                 laserBattery = 100;
                 batteries.splice(i, 1);
-            } else inventoryManager({name: "battery"});
+            } else inventoryManager({ name: "battery" });
             batteries.splice(i, 1);
         }
     }
@@ -389,7 +390,7 @@ function update(currentTime) { // Aggiorna movimento del player ed altro
             medSound.playbackRate = 1.5;
             medSound.play();
             if (player.hit > 0) player.hit--;
-            else if (player.hit <= 0) inventoryManager({name: "medkit"});
+            else if (player.hit <= 0) inventoryManager({ name: "medkit" });
             meds.splice(i, 1);
         }
     }
