@@ -236,13 +236,11 @@ function updateEnemies(deltaTime) { // Aggiornamento dei nemici per frame
 
                 let candidates = [];
 
-                for (let r = 0; r < rows; r++) {
-                    for (let c = 0; c < cols; c++) {
-                        if (maze[r][c] !== 0) continue;
-
-                        // scegli solo celle abbastanza lontane
-                        if (distFromEnemy[r][c] > 8) {
-                            candidates.push([r, c]);
+                if (candidates.length === 0) {
+                    for (let r = 0; r < rows; r++) {
+                        for (let c = 0; c < cols; c++) {
+                            if (maze[r][c] !== 0) continue;
+                            if (distFromEnemy[r][c] > 0) candidates.push([r, c]);
                         }
                     }
                 }
@@ -250,6 +248,8 @@ function updateEnemies(deltaTime) { // Aggiornamento dei nemici per frame
                 if (candidates.length > 0) {
                     const pick = candidates[Math.floor(Math.random() * candidates.length)];
                     enemy.wanderTarget = { row: pick[0], col: pick[1] };
+                } else {
+                    enemy.wanderTarget = { row: enemyRow, col: enemyCol };
                 }
             }
 
@@ -259,20 +259,8 @@ function updateEnemies(deltaTime) { // Aggiornamento dei nemici per frame
             }
         }
         if (targetRow == null || targetCol == null) {
-            // invece di continue, fai muovere random leggermente
-            enemy.angle += (Math.random() - 0.5) * 0.2;
-            enemy.x += Math.cos(enemy.angle) * enemy.speed * deltaTime * 60;
-            enemy.y += Math.sin(enemy.angle) * enemy.speed * deltaTime * 60;
-            entitiesCollision(enemy);
-            // Se è arrivato al centro della cella target → sblocca
-            if (enemy.currentCellTarget) {
-
-                const centerX = enemy.currentCellTarget[1] * cell_size + cell_size / 2;
-                const centerY = enemy.currentCellTarget[0] * cell_size + cell_size / 2;
-
-                const dx = enemy.x - centerX;
-                const dy = enemy.y - centerY;
-            }
+            enemy.currentCellTarget = null;
+            if (enemy.state === "wander") enemy.wanderTarget = null;
             continue;
         }
 
@@ -318,6 +306,12 @@ function updateEnemies(deltaTime) { // Aggiornamento dei nemici per frame
 
         // Usa sempre la cella target finché non la raggiunge
         let next = enemy.currentCellTarget;
+
+        if (!next) {
+            if (enemy.state === "wander") enemy.wanderTarget = null;
+            enemy.lastTarget = null; // forza ricalcolo BFS al prossimo frame
+            continue;
+        }
 
         if (next) { // Se esiste cella migliore
 

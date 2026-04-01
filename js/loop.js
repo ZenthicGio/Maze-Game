@@ -16,9 +16,9 @@ function updateBullets(deltaTime) { // Aggiorna i proiettili
         const row = Math.floor(enemyToRemove.y / cell_size)
         const col = Math.floor(enemyToRemove.x / cell_size)
         let rk = Math.random();
-        if (rk < 0.15) batteries.push({ row: row, col: col }); // 15% batterie (0.15 → 0.25)
-        else if (rk < 0.5) magazines.push({ row: row, col: col }); // +10% caricatori (0.15 → 0.25)
-        else if (rk < 0.75) meds.push({ row: row, col: col }); // 25% medkit (0.5 → 0.75)
+        if (rk < 0.1) batteries.push({ row: row, col: col }); // 10% batterie (0 → 0.03)
+        else if (rk < 0.2) magazines.push({ row: row, col: col }); // 10% caricatori (0.03 → 0.1)
+        else if (rk < 0.3) meds.push({ row: row, col: col }); // 10% medkit (0.1 → 0.15)
         else { };
         enemies.splice(index, 1);
     };

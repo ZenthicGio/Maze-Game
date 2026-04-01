@@ -135,17 +135,21 @@ function finishGeneration() { // Completa la generazione del labirinto. Sceglie 
     pickupRemaining = pickup.length;
 
     // Magazines
-    const magRnd = Math.floor(Math.random() * 2) + 1;
+    const magRnd = Math.floor(Math.random() * 2 + 0.5);
     const magCount = magRnd;
     magazines = takeDeadCells(magCount).map(([r, c]) => ({ row: r, col: c }));
     initialMagazines = magazines.map(m => ({ row: m.row, col: m.col }));
 
     // Batteries
-    batteries = takeDeadCells(1).map(([r, c]) => ({ row: r, col: c }));
+    const btrnd = Math.floor(Math.random() + 0.55);
+    const btCount = btrnd;
+    batteries = takeDeadCells(btCount).map(([r, c]) => ({ row: r, col: c }));
     initialBatteries = batteries.map(bt => ({ row: bt.row, col: bt.col }));
 
     // Meds
-    meds = takeDeadCells(1).map(([r, c]) => ({ row: r, col: c }));
+    const medrnd = Math.floor(Math.random() + 0.55);
+    const medCount = medrnd;
+    meds = takeDeadCells(medCount).map(([r, c]) => ({ row: r, col: c }));
     initialMeds = meds.map(m => ({ row: m.row, col: m.col }));
 
     // Railgun
