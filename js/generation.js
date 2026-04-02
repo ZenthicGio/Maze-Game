@@ -265,6 +265,7 @@ function enemiesPush(row, col) { // Crea il nemico in coordinate pixel (centro d
 }
 function generateMaze() { //Resetta il labirinto e riavvia la generazione
     goalActive = false; // Disattiva il Goal
+    fogOfWar.radius = 108 + 10.8 * perk.stats.player.fow;
 
     // Riempie la griglia di muri (1)
     for (let row = 0; row < rows; row++) {

@@ -10,7 +10,6 @@ function drawFogOfWar() {
 
     fogCtx.clearRect(0, 0, fogCanvas.width, fogCanvas.height);
     if (!fogOfWar.enabled) return;
-
     fogCtx.save();
     fogCtx.fillStyle = fogOfWar.color;
     fogCtx.fillRect(0, 0, fogCanvas.width, fogCanvas.height);

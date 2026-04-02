@@ -124,7 +124,6 @@ function updateBullets(deltaTime) { // Aggiorna i proiettili
                         killSound.currentTime = 0;
                         killSound.play();
                         bullets.splice(i, 1);
-                        console.log(enemy.life)
                     } else {
                         killSound.playbackRate = rnd;
                         killSound.currentTime = 0;
@@ -355,6 +354,10 @@ function update(currentTime) { // Aggiorna movimento del player ed altro
         }
     }
 
+    if (pickupRemaining <= 0 && fogOfWar.radius <= 3000) {
+        fogOfWar.radius += Math.max(0, fogOfWar.radius * deltaTime);
+    }
+
     // Raccolta caricatori
     for (let i = magazines.length - 1; i >= 0; i--) {
         if (magazines[i].row === playerRow && magazines[i].col === playerCol) {
@@ -389,8 +392,10 @@ function update(currentTime) { // Aggiorna movimento del player ed altro
             medSound.currentTime = 0;
             medSound.playbackRate = 1.5;
             medSound.play();
-            if (player.hit > 0) player.hit = player.hit - (1 + perk.stats.items.mde);
-            else if (player.hit <= 0) inventoryManager({ name: "medkit" });
+            if (player.hit > 0) {
+                if (player.hit >= 1 + perk.stats.items.mde) player.hit = player.hit - (1 + perk.stats.items.mde);
+                else player.hit = 0;
+            } else if (player.hit <= 0) inventoryManager({ name: "medkit" });
             meds.splice(i, 1);
         }
     }

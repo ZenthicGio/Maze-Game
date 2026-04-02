@@ -619,3 +619,13 @@ File:
   -index.html
   -maze.css
   -new text.js dynamic management of text dimension
+
+  ________________________________________V5.2.1.0_________________________________________
+
+Change:
+  -Fog of war now has perk.
+  -Fog of war now open completely when keys remaining is less equal to 0
+
+Fix:
+  -Player will no longer have extra HP after picking up medkit improved by perks.
+  -Game save now save Medkit Efficiency and Laser Battery Efficiency perk status

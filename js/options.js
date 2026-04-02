@@ -27,6 +27,7 @@ function difficulty(type) {// Seleziona la difficoltÃ  modificando la velocit�
         perk.cost.player.health = 100;
         perk.cost.player.stamina = 100;
         perk.cost.player.speed = 225;
+        perk.cost.player.fow = 85;
         perk.cost.bullets.counter = 175;
         perk.cost.bullets.damage = 700;
         perk.cost.bullets.speed = 125;
@@ -35,11 +36,13 @@ function difficulty(type) {// Seleziona la difficoltÃ  modificando la velocit�
         perk.stats.player.health = 0;
         perk.stats.player.stamina = 0;
         perk.stats.player.speed = 0;
+        perk.stats.player.fow = 0;
         perk.stats.bullets.counter = 0;
         perk.stats.bullets.damage = 0;
         perk.stats.bullets.speed = 0;
         perk.stats.items.mde = 0;
         perk.stats.items.lbe = 0;
+        fogOfWar.radius = 108;
         levelCompleteReward = 100;
         generateMaze();
     }
@@ -56,6 +59,7 @@ function difficulty(type) {// Seleziona la difficoltÃ  modificando la velocit�
         perk.cost.player.health = 200;
         perk.cost.player.stamina = 200;
         perk.cost.player.speed = 450;
+        perk.cost.player.fow = 170;
         perk.cost.bullets.counter = 350;
         perk.cost.bullets.damage = 1400;
         perk.cost.bullets.speed = 350;
@@ -64,11 +68,13 @@ function difficulty(type) {// Seleziona la difficoltÃ  modificando la velocit�
         perk.stats.player.health = 0;
         perk.stats.player.stamina = 0;
         perk.stats.player.speed = 0;
+        perk.stats.player.fow = 0;
         perk.stats.bullets.counter = 0;
         perk.stats.bullets.damage = 0;
         perk.stats.bullets.speed = 0;
         perk.stats.items.mde = 0;
         perk.stats.items.lbe = 0;
+        fogOfWar.radius = 108;
         levelCompleteReward = 200
         generateMaze();
     }
@@ -85,6 +91,7 @@ function difficulty(type) {// Seleziona la difficoltÃ  modificando la velocit�
         perk.cost.player.health = 400;
         perk.cost.player.stamina = 400;
         perk.cost.player.speed = 900;
+        perk.cost.player.fow = 340;
         perk.cost.bullets.counter = 700;
         perk.cost.bullets.damage = 2400;
         perk.cost.bullets.speed = 700;
@@ -93,11 +100,13 @@ function difficulty(type) {// Seleziona la difficoltÃ  modificando la velocit�
         perk.stats.player.health = 0;
         perk.stats.player.stamina = 0;
         perk.stats.player.speed = 0;
+        perk.stats.player.fow = 0;
         perk.stats.bullets.counter = 0;
         perk.stats.bullets.damage = 0;
         perk.stats.bullets.speed = 0;
         perk.stats.items.mde = 0;
         perk.stats.items.lbe = 0;
+        fogOfWar.radius = 108;
         levelCompleteReward = 400
         generateMaze();
     }
@@ -114,6 +123,7 @@ function difficulty(type) {// Seleziona la difficoltÃ  modificando la velocit�
         perk.cost.player.health = 800;
         perk.cost.player.stamina = 800;
         perk.cost.player.speed = 1800;
+        perk.cost.player.fow = 680;
         perk.cost.bullets.counter = 1400;
         perk.cost.bullets.damage = 4800;
         perk.cost.bullets.speed = 1400;
@@ -122,11 +132,13 @@ function difficulty(type) {// Seleziona la difficoltÃ  modificando la velocit�
         perk.stats.player.health = 0;
         perk.stats.player.stamina = 0;
         perk.stats.player.speed = 0;
+        perk.stats.player.fow = 0;
         perk.stats.bullets.counter = 0;
         perk.stats.bullets.damage = 0;
         perk.stats.bullets.speed = 0;
         perk.stats.items.mde = 0;
         perk.stats.items.lbe = 0;
+        fogOfWar.radius = 108;
         levelCompleteReward = 800
         generateMaze();
     }
@@ -761,6 +773,31 @@ function playerStats() {
                     <img src="icons/plus.png">
                 </a>
             </div>
+            <div class="flex">
+                <a class="sec left fit-text">View Range</a>
+                <a id="fow" class="sec right fit-text"></a>
+                <a id="fowLVL" class="absolute-right"></a>
+                <a id="fowPLUS" class="absolute-left"></a>
+            </div>
+            <div class="slot-row">
+                <table class="fow">
+                    <tr>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                    </tr>
+                </table>
+                <a class="upgrade hoverable fowplus" onclick="increaseFOW()">
+                    <img src="icons/plus.png">
+                </a>
+            </div>
         </div>
     </div>
     `;
@@ -772,7 +809,8 @@ function playerStats() {
     paintPerkBar(".damage-bar", perk.stats.bullets.damage, "rgb(200,0,0)", "rgb(47,0,0)");
     paintPerkBar(".bulletsspeed-bar", perk.stats.bullets.speed, "rgb(200,200,200)", "rgb(47,47,47)");
     paintPerkBar(".medkit-efficiency", perk.stats.items.mde, "rgb(128,200,0)", "rgb(47,74,0)");
-    paintPerkBar(".battery-efficiency", perk.stats.items.lbe, "rgb(0, 255, 255)", "rgb(0,68,68)")
+    paintPerkBar(".battery-efficiency", perk.stats.items.lbe, "rgb(0, 255, 255)", "rgb(0,68,68)");
+    paintPerkBar(".fow", perk.stats.player.fow, "rgb(68, 68, 68)", "rgb(0,0,0)");
 
     const btnH = document.querySelector(".healthplus"),
         hudHealth = document.getElementById("health"),
@@ -806,6 +844,10 @@ function playerStats() {
         hudLBE = document.getElementById("lbe"),
         lbeLVL = document.getElementById("lbeLVL"),
         lbePLUS = document.getElementById("lbePLUS"),
+        btnFOW = document.querySelector(".fowplus"),
+        hudFOW = document.getElementById("fow"),
+        fowLVL = document.getElementById("fowLVL"),
+        fowPLUS = document.getElementById("fowPLUS"),
         fit_text = document.querySelectorAll(".fit-text");
 
     btnH.style.display = (score >= perk.cost.player.health + perk.stats.player.health * 75 && perk.stats.player.health < 10) ? "block" : "none"; //
@@ -856,6 +898,11 @@ function playerStats() {
     lbeLVL.textContent = "Lv." + perk.stats.items.lbe;
     lbePLUS.textContent = "-" + `${perk.stats.items.lbe * 4.5}` + "%";
 
+    btnFOW.style.display = (score >= perk.cost.player.fow + perk.stats.player.fow * 75 && perk.stats.player.fow < 10) ? "block" : "none";
+    hudFOW.style.color = (score >= perk.cost.player.fow + perk.stats.player.fow * 75 && perk.stats.player.fow < 10) ? "rgb(0,255,0)" : "rgb(255,0,0)";
+    hudFOW.textContent = perk.stats.player.fow < 10 ? `${score}/${perk.cost.player.fow + perk.stats.player.fow * 75}` : "MAX";
+    fowLVL.textContent = "Lv." + perk.stats.player.fow;
+    fowPLUS.textContent = "+" + (10.8 * perk.stats.player.fow).toFixed(1) + "%";
 
     fit_text.forEach(el => {
         fitText(el)
@@ -922,7 +969,10 @@ function useInventorySlot(slotIndex) {
     let used = false;
 
     if (itemName === "medkit") {
-        if (player.hit > 0) player.hit = player.hit - (1 + perk.stats.items.mde);
+        if (player.hit > 0) {
+                if (player.hit >= 1 + perk.stats.items.mde) player.hit = player.hit - (1 + perk.stats.items.mde);
+                else player.hit = 0;
+            };
         medSound.currentTime = 0;
         medSound.playbackRate = 1.5;
         medSound.play();
@@ -1067,6 +1117,8 @@ function startGame() {
     respawnTimerBlock(0);
     isMainMenu = false;
     isPaused = false;
+    isMainMenu = false;
+    isPaused = false;
     GAME.style.display = "block";
     START_MENU.style.display = "none";
 }
@@ -1090,6 +1142,8 @@ function toMainMenu() {
 function startLoadedGame() {
     GAME.style.display = "block";
     START_MENU.style.display = "none";
+    isMainMenu = false;
+    isPaused = false;
     isMainMenu = false;
     isPaused = false;
     respawnTimerBlock(0);

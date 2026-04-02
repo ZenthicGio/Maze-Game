@@ -335,6 +335,14 @@ function increasePlayerSpeed() {
     playerStats();
     refreshScore();
 }
+function increaseFOW() {
+    if (score < (perk.cost.player.fow + perk.stats.player.fow * 90) || perk.stats.player.fow >= 10) return;
+    perkSpentScore += perk.cost.player.fow + perk.stats.player.fow * 75;
+    perk.stats.player.fow++;
+    fogOfWar.radius = 108 + perk.stats.player.fow * 10.8;
+    playerStats();
+    refreshScore();
+}
 function increaseBullets() {
     if (score < (perk.cost.bullets.counter + perk.stats.bullets.counter * 85) || perk.stats.bullets.counter >= 10) return;
     perkSpentScore += perk.cost.bullets.counter + perk.stats.bullets.counter * 85;
@@ -430,6 +438,7 @@ function resetPlayerStats() {
     perk.stats.player.health = 0;
     perk.stats.player.stamina = 0;
     perk.stats.player.speed = 0;
+    perk.stats.player.fow = 0;
     perk.stats.bullets.counter = 0;
     perk.stats.bullets.damage = 0;
     perk.stats.bullets.speed = 0;

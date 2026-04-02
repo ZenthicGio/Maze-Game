@@ -199,6 +199,7 @@ async function saveData(filename) {
             modeIndex,
             isReloading,
             reloadTime,
+            fow: fogOfWar.radius,
             railgun: {
                 pickup: railgun.pickup ? { row: railgun.pickup.row, col: railgun.pickup.col } : null,
                 activeByPickup: railgun.activeByPickup,
@@ -224,12 +225,17 @@ async function saveData(filename) {
                 player: {
                     health: perk.cost.player.health,
                     stamina: perk.cost.player.stamina,
-                    speed: perk.cost.player.speed
+                    speed: perk.cost.player.speed,
+                    fow: perk.cost.player.fow
                 },
                 bullets: {
                     counter: perk.cost.bullets.counter,
                     damage: perk.cost.bullets.damage,
                     speed: perk.cost.bullets.speed
+                },
+                items: {
+                    mde: perk.cost.items.mde,
+                    lbe: perk.cost.items.lbe
                 }
             }
         },
@@ -276,13 +282,15 @@ async function saveData(filename) {
             speed: player.speed,
             hit: player.hit,
             maxHealth: player.maxHealth,
-            staminaDrain: stamina.drain
+            staminaDrain: stamina.drain,
+            fow: fogOfWar.radius,
         },
 
         perk: {
             health: perk.stats.player.health,
             stamina: perk.stats.player.stamina,
             speed: perk.stats.player.speed,
+            fow: perk.stats.player.fow,
             bullets: perk.stats.bullets.counter,
             damage: perk.stats.bullets.damage,
             bulletsSpeed: perk.stats.bullets.speed,
@@ -495,29 +503,27 @@ function applyData(data) {
         safe = data.difficulty.safe ?? safe;
 
         if (data.difficulty.railgun) {
-            railgun.cooldownLevels =
-                data.difficulty.railgun.cooldownLevels ?? railgun.cooldownLevels;
-            railgun.maxShots =
-                data.difficulty.railgun.maxShots ?? railgun.maxShots;
+            railgun.cooldownLevels = data.difficulty.railgun.cooldownLevels ?? railgun.cooldownLevels;
+            railgun.maxShots = data.difficulty.railgun.maxShots ?? railgun.maxShots;
         }
 
         if (data.difficulty.perkCost) {
             if (data.difficulty.perkCost.player) {
-                perk.cost.player.health =
-                    data.difficulty.perkCost.player.health ?? perk.cost.player.health;
-                perk.cost.player.stamina =
-                    data.difficulty.perkCost.player.stamina ?? perk.cost.player.stamina;
-                perk.cost.player.speed =
-                    data.difficulty.perkCost.player.speed ?? perk.cost.player.speed;
+                perk.cost.player.health = data.difficulty.perkCost.player.health ?? perk.cost.player.health;
+                perk.cost.player.stamina = data.difficulty.perkCost.player.stamina ?? perk.cost.player.stamina;
+                perk.cost.player.speed = data.difficulty.perkCost.player.speed ?? perk.cost.player.speed;
+                perk.cost.player.fow = data.difficulty.perkCost.player.fow ?? perk.cost.player.fow;
             }
 
             if (data.difficulty.perkCost.bullets) {
-                perk.cost.bullets.counter =
-                    data.difficulty.perkCost.bullets.counter ?? perk.cost.bullets.counter;
-                perk.cost.bullets.damage =
-                    data.difficulty.perkCost.bullets.damage ?? perk.cost.bullets.damage;
-                perk.cost.bullets.speed =
-                    data.difficulty.perkCost.bullets.speed ?? perk.cost.bullets.speed;
+                perk.cost.bullets.counter = data.difficulty.perkCost.bullets.counter ?? perk.cost.bullets.counter;
+                perk.cost.bullets.damage = data.difficulty.perkCost.bullets.damage ?? perk.cost.bullets.damage;
+                perk.cost.bullets.speed = data.difficulty.perkCost.bullets.speed ?? perk.cost.bullets.speed;
+            }
+
+            if (data.difficulty.perkCost.items) {
+                perk.cost.items.mde = data.difficulty.perkCost.items.mde ?? perk.cost.items.mde;
+                perk.cost.items.lbe = data.difficulty.perkCost.items.lbe ?? perk.cost.items.lbe;
             }
         }
     }
@@ -526,6 +532,7 @@ function applyData(data) {
         perk.stats.player.health = data.perk.health ?? perk.stats.player.health;
         perk.stats.player.stamina = data.perk.stamina ?? perk.stats.player.stamina;
         perk.stats.player.speed = data.perk.speed ?? perk.stats.player.speed;
+        perk.stats.player.fow = data.perk.fow ?? perk.stats.player.fow;
         perk.stats.bullets.counter = data.perk.bullets ?? perk.stats.bullets.counter;
         perk.stats.bullets.damage = data.perk.damage ?? perk.stats.bullets.damage;
         perk.stats.bullets.speed = data.perk.bulletsSpeed ?? perk.stats.bullets.speed;
@@ -538,6 +545,7 @@ function applyData(data) {
         bulletsMag = data.combat.bulletsMag ?? bulletsMag;
         laserBattery = data.combat.laserBattery ?? laserBattery;
         modeIndex = data.combat.modeIndex ?? modeIndex;
+        fogOfWar.radius = data.combat.fow ?? fogOfWar.radius;
 
         if (data.combat.railgun) {
             railgun.pickup = data.combat.railgun.pickup

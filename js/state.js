@@ -27,7 +27,7 @@ const pickupCounterEl = document.getElementById("pickupCounter"),
     INVENTORY = document.getElementById("inventory");
 
 // Salvataggio
-const SAVE_VERSION = "v5.2.0.0"
+const SAVE_VERSION = "v5.2.1.0"
 
 // Audio
 const shootSound = new Audio("SFX/shot.mp3"),
@@ -70,13 +70,6 @@ let lastTime = performance.now(),
 const rows = 33,
     cols = 33,
     cell_size = 20;
-
-let fogOfWar = {
-    enabled: true,
-    radius: cell_size * 5.4,
-    edgeSoftness: cell_size * 1.8,
-    color: "rgba(0, 0, 0, 1)"
-};
 gameCanvas.width = cols * cell_size;
 gameCanvas.height = rows * cell_size;
 fogCanvas.width = gameCanvas.width;
@@ -124,7 +117,8 @@ let perk = {
         player: {
             health: 0,
             stamina: 0,
-            speed: 0
+            speed: 0,
+            fow: 0
         },
         bullets: {
             counter: 0,
@@ -140,7 +134,8 @@ let perk = {
         player: {
             health: 100,
             stamina: 100,
-            speed: 225
+            speed: 225,
+            fow: 85
         },
         bullets: {
             counter: 175,
@@ -153,7 +148,12 @@ let perk = {
         }
     }
 };
-
+let fogOfWar = {
+    enabled: true,
+    radius: 108 + 10.8 * perk.stats.player.fow,
+    edgeSoftness: 36,
+    color: "rgba(0, 0, 0, 1)"
+};
 let player = {
     x: cell_size + cell_size / 2,
     radius: 5,
