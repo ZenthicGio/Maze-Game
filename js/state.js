@@ -27,7 +27,7 @@ const pickupCounterEl = document.getElementById("pickupCounter"),
     INVENTORY = document.getElementById("inventory");
 
 // Salvataggio
-const SAVE_VERSION = "v5.1.0.0"
+const SAVE_VERSION = "v5.2.0.0"
 
 // Audio
 const shootSound = new Audio("SFX/shot.mp3"),
