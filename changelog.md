@@ -574,3 +574,48 @@ Add:
   -Player Inventory.
   -Enemies now drop items.
   -Completing a level will recive some scores. Values change on difficulty.
+
+________________________________________V5.1.0.1_________________________________________
+
+Fix:
+  -Enemies no longer lose chasing target and path.
+
+Edit:
+  -Some item spawn balancing.
+
+File:
+  -ai.js (*Fix*)
+  -generation.js (*Edit*)
+  -loop.js (*Edit*)
+
+________________________________________V5.2.0.0_________________________________________
+
+Add:
+  -Fog of war
+  -Med kit efficiency
+  -Laser battery efficiency
+
+Edit:
+  (modifica del fade-in-out speed della scritta pre-menu)
+  -Player stamina perk now is linear.
+  -Stats menu restyle.
+
+Fix:
+  -Returning to main menu and joining back the game, inventory and player stats not open.
+
+File:
+  -ai.js
+  -input.js
+  -laser-audio.js
+  -laser.js
+  -loop.js
+  -movement-selection.js
+  -option.js
+  -render.js
+  -save.js
+  -state.js
+  -utils.js
+  -weapons.js
+  -index.html
+  -maze.css
+  -new text.js dynamic management of text dimension

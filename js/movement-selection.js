@@ -26,9 +26,9 @@ control.forEach(radio => {
             shootKey.innerHTML = "LMB: ";
         }
 
-        if (!canvas.hasAttribute("tabindex")) {
-            canvas.setAttribute("tabindex", "-1");
+        if (!gameCanvas.hasAttribute("tabindex")) {
+            gameCanvas.setAttribute("tabindex", "-1");
         }
-        canvas.focus();
+        gameCanvas.focus();
     });
 });

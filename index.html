@@ -46,7 +46,10 @@
                 <div tabindex="-1" class="console">
                     <input type="text" class="input" id="console" spellcheck="false" placeholder="Console" hidden />
                 </div>
-                <canvas></canvas>
+                <div class="canvas-stack">
+                    <canvas id="game-canvas" tabindex="-1"></canvas>
+                    <canvas id="fog-canvas" aria-hidden="true"></canvas>
+                </div>
                 <div class="pause-menu" id="pause-menu"></div>
                 <div class="inventory" id="inventory"></div>
             </div>
@@ -67,6 +70,7 @@
                 if (typeof Neutralino !== "undefined" && typeof Neutralino.init === "function") Neutralino.init();
             })
         </script>
+        <script src="js/text.js" defer></script>
         <script src="js/options.js" defer></script>
         <script src="js/utils.js" defer></script>
         <script src="js/state.js" defer></script>

@@ -5,7 +5,31 @@
  * This code is the property of the author.
  * Unauthorized copying, modification, or distribution is strictly prohibited.
  */
+function drawFogOfWar() {
+    if (!fogCtx || !fogCanvas) return;
 
+    fogCtx.clearRect(0, 0, fogCanvas.width, fogCanvas.height);
+    if (!fogOfWar.enabled) return;
+
+    fogCtx.save();
+    fogCtx.fillStyle = fogOfWar.color;
+    fogCtx.fillRect(0, 0, fogCanvas.width, fogCanvas.height);
+
+    fogCtx.globalCompositeOperation = "destination-out";
+
+    const outer = Math.max(player.radius * 2.2, fogOfWar.radius);
+    const inner = Math.max(player.radius * 1.1, outer - fogOfWar.edgeSoftness);
+
+    const g = fogCtx.createRadialGradient(player.x, player.y, inner, player.x, player.y, outer);
+    g.addColorStop(0, "rgba(0, 0, 0, 1)");
+    g.addColorStop(1, "rgba(0, 0, 0, 0)");
+
+    fogCtx.fillStyle = g;
+    fogCtx.beginPath();
+    fogCtx.arc(player.x, player.y, outer, 0, Math.PI * 2);
+    fogCtx.fill();
+    fogCtx.restore();
+}
 function drawMagazines() { // Disegna i pickable dei caricatori
     for (const m of magazines) {
         ctx.fillStyle = "rgba(0, 128, 0, 0.5)";
@@ -127,9 +151,9 @@ function drawBatteries() {
 }
 function startSP() {
     const d1 = Math.hypot(player.x, player.y);
-    const d2 = Math.hypot(canvas.width - player.x, player.y);
-    const d3 = Math.hypot(player.x, canvas.height - player.y);
-    const d4 = Math.hypot(canvas.width - player.x, canvas.height - player.y);
+    const d2 = Math.hypot(gameCanvas.width - player.x, player.y);
+    const d3 = Math.hypot(player.x, gameCanvas.height - player.y);
+    const d4 = Math.hypot(gameCanvas.width - player.x, gameCanvas.height - player.y);
 
     spsr = Math.max(d1, d2, d3, d4) + 30; // > canvas
     sps = performance.now();
@@ -335,7 +359,7 @@ function drawMaze() { // Disegna tutto su canvas
         ctx.restore();
     }
     // Pulisce il canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
     // Disegna il labirinto
     for (let row = 0; row < rows; row++) { // Ciclo righe
@@ -395,6 +419,7 @@ function drawMaze() { // Disegna tutto su canvas
     drawPlayer();
     drawEnemies();
     drawEnemyState();
+    drawFogOfWar();
 }
 function drawBullets() { // Disegno proiettili
     for (let b of bullets) { // Railgun

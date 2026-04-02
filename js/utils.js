@@ -313,8 +313,8 @@ function stopLaserFiring() {
 function increaseMaxHealth() {
     if (score < (perk.cost.player.health + perk.stats.player.health * 75) || perk.stats.player.health >= 10) return;
     perkSpentScore += perk.cost.player.health + perk.stats.player.health * 75;
-
     perk.stats.player.health++;
+    player.maxHealth = 3 + perk.stats.player.health;
     playerStats();
     refreshScore();
     drawPlayerHealth();
@@ -323,6 +323,7 @@ function increaseStamina() {
     if (score < (perk.cost.player.health + perk.stats.player.stamina * 75) || perk.stats.player.stamina >= 10) return;
     perkSpentScore += perk.cost.player.health + perk.stats.player.stamina * 75;
     perk.stats.player.stamina++;
+    stamina.drain = (perk.stats.player.stamina * 10) / 5;
     playerStats();
     refreshScore();
 }
@@ -353,6 +354,20 @@ function increaseBulletsSpeed() {
     perkSpentScore += perk.cost.bullets.speed + perk.stats.bullets.speed * 95;
     perk.stats.bullets.speed++;
     bs = 4 + (perk.stats.bullets.speed / 2);
+    playerStats();
+    refreshScore();
+}
+function increaseMDE() {
+    if (score < (perk.cost.items.mde + perk.stats.items.mde * 225) || perk.stats.items.mde >= 3) return;
+    perkSpentScore += perk.cost.items.mde + perk.stats.items.mde * 225;
+    perk.stats.items.mde++;
+    playerStats();
+    refreshScore();
+}
+function increaseLBE() {
+    if (score < (perk.cost.items.lbe + perk.stats.items.lbe * 90) || perk.stats.items.lbe >= 10) return;
+    perkSpentScore += perk.cost.items.lbe + perk.stats.items.lbe * 90;
+    perk.stats.items.lbe++;
     playerStats();
     refreshScore();
 }
@@ -410,4 +425,19 @@ function syncInventoryMagazine() {
         slot => slot && typeof slot.name === "string" && slot.name.toLowerCase() === "magazine"
     );
     magazine = magSlot ? magSlot.quantity : 0;
+}
+function resetPlayerStats() {
+    perk.stats.player.health = 0;
+    perk.stats.player.stamina = 0;
+    perk.stats.player.speed = 0;
+    perk.stats.bullets.counter = 0;
+    perk.stats.bullets.damage = 0;
+    perk.stats.bullets.speed = 0;
+    perk.stats.items.mde = 0;
+    perk.stats.items.lbe = 0;
+    keyScore = 0;
+    scoreKills = 0;
+    perkSpentScore = 0;
+    levelCompleted = 0;
+    refreshScore();
 }

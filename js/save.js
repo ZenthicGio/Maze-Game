@@ -275,7 +275,8 @@ async function saveData(filename) {
             angle: player.angle,
             speed: player.speed,
             hit: player.hit,
-            maxHealth: player.maxHealth
+            maxHealth: player.maxHealth,
+            staminaDrain: stamina.drain
         },
 
         perk: {
@@ -285,6 +286,8 @@ async function saveData(filename) {
             bullets: perk.stats.bullets.counter,
             damage: perk.stats.bullets.damage,
             bulletsSpeed: perk.stats.bullets.speed,
+            itemsMDE: perk.stats.items.mde,
+            itemsLBE: perk.stats.items.lbe
         },
 
         inventoryData: {
@@ -441,11 +444,12 @@ function applyData(data) {
         player.speed = data.playerState.speed ?? player.speed;
         player.hit = data.playerState.hit ?? player.hit;
         player.maxHealth = data.playerState.maxHealth ?? player.maxHealth;
+        stamina.drain = data.staminaDrain ?? stamina.drain;
     }
 
     // Clamp player dentro canvas
-    player.x = Math.max(player.radius, Math.min(canvas.width - player.radius, player.x));
-    player.y = Math.max(player.radius, Math.min(canvas.height - player.radius, player.y));
+    player.x = Math.max(player.radius, Math.min(gameCanvas.width - player.radius, player.x));
+    player.y = Math.max(player.radius, Math.min(gameCanvas.height - player.radius, player.y));
 
     // Fondamentale: riallinea la cella stabile al player appena caricato
     stablePlayerCell = {
@@ -525,6 +529,8 @@ function applyData(data) {
         perk.stats.bullets.counter = data.perk.bullets ?? perk.stats.bullets.counter;
         perk.stats.bullets.damage = data.perk.damage ?? perk.stats.bullets.damage;
         perk.stats.bullets.speed = data.perk.bulletsSpeed ?? perk.stats.bullets.speed;
+        perk.stats.items.mde = data.perk.itemsMDE ?? perk.stats.items.mde;
+        perk.stats.items.lbe = data.perk.itemsLBE ?? perk.stats.items.lbe;
     }
 
     if (data.combat) {
@@ -599,8 +605,8 @@ function applyData(data) {
             const radius = Number(e.radius) || player.radius;
 
             // clamp dentro canvas
-            const clampedX = Math.max(radius, Math.min(canvas.width - radius, rawX));
-            const clampedY = Math.max(radius, Math.min(canvas.height - radius, rawY));
+            const clampedX = Math.max(radius, Math.min(gameCanvas.width - radius, rawX));
+            const clampedY = Math.max(radius, Math.min(gameCanvas.height - radius, rawY));
 
             const validTarget =
                 e.target &&

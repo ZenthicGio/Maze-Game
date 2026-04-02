@@ -385,8 +385,8 @@ function updateEnemies(deltaTime) { // Aggiornamento dei nemici per frame
                 }
             }
         }
-        enemy.x = Math.max(enemy.radius, Math.min(canvas.width - enemy.radius, enemy.x));
-        enemy.y = Math.max(enemy.radius, Math.min(canvas.height - enemy.radius, enemy.y));
+        enemy.x = Math.max(enemy.radius, Math.min(gameCanvas.width - enemy.radius, enemy.x));
+        enemy.y = Math.max(enemy.radius, Math.min(gameCanvas.height - enemy.radius, enemy.y));
 
         const newRow = Math.floor(enemy.y / cell_size);
         const newCol = Math.floor(enemy.x / cell_size);

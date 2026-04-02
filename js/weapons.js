@@ -22,7 +22,7 @@ function disablePickupRailgun() {
     syncWeaponProfile();
 }
 document.addEventListener("mousemove", (e) => {
-    const rect = canvas.getBoundingClientRect();
+    const rect = gameCanvas.getBoundingClientRect();
     mouseX = e.clientX - rect.left;
     mouseY = e.clientY - rect.top;
 });

@@ -71,7 +71,7 @@ function startLooping(buffer, when) {
     activeLoopGain = loopGain;
 }
 async function onPressStart() {
-    if (!canvas) return;
+    if (!gameCanvas) return;
     pressToken += 1;
     const token = pressToken;
     isCracking = true;
@@ -88,7 +88,7 @@ async function onPressStart() {
     startLooping(loop, loopWhen);
 }
 async function onPressEnd() {
-    if (!canvas) return;
+    if (!gameCanvas) return;
     pressToken += 1;
     isCracking = false;
 

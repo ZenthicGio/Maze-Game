@@ -48,9 +48,9 @@ function updateBullets(deltaTime) { // Aggiorna i proiettili
 
         if (
             b.x < 0 ||
-            b.x > canvas.width ||
+            b.x > gameCanvas.width ||
             b.y < 0 ||
-            b.y > canvas.height
+            b.y > gameCanvas.height
         ) {
             bullets.splice(i, 1);
             continue;
@@ -299,8 +299,8 @@ function update(currentTime) { // Aggiorna movimento del player ed altro
     // Trail
     let R = player.x - lastFootX;
     let L = player.y - lastFootY;
-    player.x = Math.max(player.radius, Math.min(canvas.width - player.radius, player.x));
-    player.y = Math.max(player.radius, Math.min(canvas.height - player.radius, player.y));
+    player.x = Math.max(player.radius, Math.min(gameCanvas.width - player.radius, player.x));
+    player.y = Math.max(player.radius, Math.min(gameCanvas.height - player.radius, player.y));
 
     let dist = Math.sqrt(R ** 2 + L ** 2);
     let rnd = Math.random() * 1.3 + 1;
@@ -389,7 +389,7 @@ function update(currentTime) { // Aggiorna movimento del player ed altro
             medSound.currentTime = 0;
             medSound.playbackRate = 1.5;
             medSound.play();
-            if (player.hit > 0) player.hit--;
+            if (player.hit > 0) player.hit = player.hit - (1 + perk.stats.items.mde);
             else if (player.hit <= 0) inventoryManager({ name: "medkit" });
             meds.splice(i, 1);
         }
@@ -481,7 +481,8 @@ function update(currentTime) { // Aggiorna movimento del player ed altro
     // Updates
     updateBullets(deltaTime);
     if (isHolding) {
-        laserBattery -= 10 * deltaTime;
+        const drainMultiplier = 1 - (perk.stats.items.lbe * 0.045);
+        laserBattery = Math.max(0, laserBattery - (10 * deltaTime * drainMultiplier));
         if (laserBattery <= 0) {
             laserBattery = 0;
             stopLaserFiring();

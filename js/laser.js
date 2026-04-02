@@ -86,7 +86,7 @@ function drawLaserBeam(b) {
     ctx.translate(player.x, player.y);
     ctx.rotate(Math.atan2(b.dy, b.dx));
 
-    const cLen = Math.hypot(canvas.width, canvas.height);
+    const cLen = Math.hypot(gameCanvas.width, gameCanvas.height);
 
     const len = raycast(
         player.x,
@@ -224,7 +224,7 @@ function startLooping(buffer, when) {
     activeLoopGain = loopGain;
 }
 async function onPressStart() {
-    if (!canvas) return;
+    if (!gameCanvas) return;
     if (!audioCtxCRK) return;
     pressToken += 1;
     const token = pressToken;
@@ -248,7 +248,7 @@ async function onPressStart() {
     startLooping(loop, loopWhen);
 }
 async function onPressEnd() {
-    if (!canvas) return;
+    if (!gameCanvas) return;
     if (!audioCtxCRK) return;
     pressToken += 1;
     isCracking = false;

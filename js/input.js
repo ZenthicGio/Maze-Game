@@ -6,12 +6,12 @@
  * Unauthorized copying, modification, or distribution is strictly prohibited.
  */
 
-canvas.addEventListener("contextmenu", function (e) {
-    const rect = canvas.getBoundingClientRect();
+gameCanvas.addEventListener("contextmenu", function (e) {
+    const rect = gameCanvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    if (x < 0 || x > canvas.width || y < 0 || y > canvas.height) return;
+    if (x < 0 || x > gameCanvas.width || y < 0 || y > gameCanvas.height) return;
     e.preventDefault();
 });
 let isPauseMenu = false;
@@ -176,7 +176,7 @@ document.addEventListener("visibilitychange", () => {
         if (!isMainMenu) pauseMenu();
     }
 });
-canvas.addEventListener("mousedown", e => {
+gameCanvas.addEventListener("mousedown", e => {
     // Click LMB = 0
     // Click MMB = 1
     // Click RMB = 2

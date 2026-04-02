@@ -14,8 +14,10 @@ const pickupCounterEl = document.getElementById("pickupCounter"),
     battery = document.getElementById("battery"),
     batteryContainer = document.getElementById("batteryContainer"),
     batteryContainerSpan = document.getElementById("batteryContainerSpan"),
-    canvas = document.querySelector("canvas"),
-    ctx = canvas.getContext("2d"),
+    gameCanvas = document.getElementById("game-canvas"),
+    fogCanvas = document.getElementById("fog-canvas"),
+    ctx = gameCanvas.getContext("2d"),
+    fogCtx = fogCanvas.getContext("2d"),
     cmd = document.getElementById("console"),
     MAIN_MENU = document.getElementById("main-menu"),
     PAUSE_MENU = document.getElementById("pause-menu"),
@@ -69,11 +71,19 @@ const rows = 33,
     cols = 33,
     cell_size = 20;
 
-canvas.width = cols * cell_size;
-canvas.height = rows * cell_size;
+let fogOfWar = {
+    enabled: true,
+    radius: cell_size * 5.4,
+    edgeSoftness: cell_size * 1.8,
+    color: "rgba(0, 0, 0, 1)"
+};
+gameCanvas.width = cols * cell_size;
+gameCanvas.height = rows * cell_size;
+fogCanvas.width = gameCanvas.width;
+fogCanvas.height = gameCanvas.height;
 
-const cx = canvas.width,
-    cy = canvas.height,
+const cx = gameCanvas.width,
+    cy = gameCanvas.height,
     wall_color = "rgb(20,20,30)",
     path_color = "lightgray";
 
@@ -120,6 +130,10 @@ let perk = {
             counter: 0,
             damage: 0,
             speed: 0
+        },
+        items: {
+            mde: 0, // Med Kit Efficiency
+            lbe: 0 // Laser Battery Efficiency
         }
     },
     cost: {
@@ -132,6 +146,10 @@ let perk = {
             counter: 175,
             damage: 700,
             speed: 125
+        },
+        items: {
+            mde: 450, // Med Kit Efficiency
+            lbe: 200 // Laser Battery Efficiency
         }
     }
 };
@@ -161,7 +179,8 @@ let isRunning = false,
 
 let stamina = {
     length: 1,
-    alpha: 0
+    alpha: 0,
+    drain: 0
 };
 const magSize = 8;
     magazine = 0,

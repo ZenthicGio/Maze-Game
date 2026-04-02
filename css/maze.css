@@ -18,8 +18,28 @@ body {
 }
 
 canvas {
-    border: 1px solid black;
     outline: none;
+}
+
+#game-canvas {
+    border: 1px solid black;
+}
+
+div.canvas-stack {
+    position: relative;
+    width: 660px;
+    height: 660px;
+}
+
+#game-canvas,
+#fog-canvas {
+    position: absolute;
+    inset: 0;
+}
+
+#fog-canvas {
+    pointer-events: none;
+    z-index: 5;
 }
 
 #hud {
@@ -100,7 +120,8 @@ input::placeholder {
     color: #070;
 }
 
-div.pause-menu, div.inventory {
+div.pause-menu,
+div.inventory {
     position: absolute;
     display: none;
     align-items: center;
@@ -128,6 +149,7 @@ div.menu-box {
     font-family: 'IBM DOS VGA 9x16', monospace;
     font-size: 40px;
 }
+
 div.menu-inventory {
     display: flex;
     flex-direction: column;
@@ -144,6 +166,7 @@ div.menu-inventory {
     font-family: 'IBM DOS VGA 9x16', monospace;
     font-size: 40px;
 }
+
 div.menu-option {
     font-family: 'IBM DOS VGA 9x16', monospace;
     font-size: 20px;
@@ -183,7 +206,25 @@ a.title {
     top: 10px;
 }
 
-div.menu-option {
+div.menu-box-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: lightgray;
+    width: 500px;
+    height: auto;
+    max-height: 660px;
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 12;
+    text-align: center;
+    font-family: 'IBM DOS VGA 9x16', monospace;
+    font-size: 40px;
+}
+
+div.menu-option-stats {
     font-family: 'IBM DOS VGA 9x16', monospace;
     font-size: 20px;
     display: flex;
@@ -194,7 +235,7 @@ div.menu-option {
     width: auto;
     height: auto;
     border-radius: 20px;
-    padding: 10px;
+    padding: 25px 40px 25px 40px;
 }
 
 a.option,
@@ -317,9 +358,11 @@ a.delete {
 }
 
 a.upgrade {
+    position: absolute;
     width: 25px;
     height: 25px;
-    margin-left: 10px;
+    margin-top: -10px;
+    right: -45px;
     background-color: #00780e;
     border-radius: 999px;
     cursor: pointer;
@@ -379,15 +422,32 @@ a.exit:hover {
     pointer-events: none;
 }
 
+a.left, a.right {
+    position: relative;
+    width: 150px;
+    height: auto;
+    white-space: nowrap;
+    line-height: 25px;
+}
+
+a.right {
+    text-align: right;
+}
+a.left {
+    text-align: left;
+}
+
 table.health-bar,
 table.stamina-bar,
 table.speed-bar,
 table.bullets-bar,
 table.damage-bar,
-table.bulletsspeed-bar {
+table.bulletsspeed-bar,
+table.medkit-efficiency,
+table.battery-efficiency {
     margin-top: 8.5px;
     height: 8px;
-    width: 200px;
+    width: 300px;
     border-collapse: collapse;
 }
 
@@ -423,6 +483,19 @@ div.flex {
     display: flex;
     flex-direction: row;
 }
+a.absolute-right, a.absolute-left {
+    position: absolute;
+    margin-top: 30px;
+    font-size: 15px;
+}
+a.absolute-left {
+    right: 350px;
+    color: rgb(0,190,0);
+    text-align: right;
+}
+a.absolute-right {
+    left: 350px;
+}
 
 div.grid {
     width: auto;
@@ -434,11 +507,12 @@ div.grid {
 
 div.cell {
     box-sizing: border-box;
-    background-color: rgb(22,22,22);
-    box-shadow: inset 0 0 0 0.1px #888;
+    background-color: rgb(33, 33, 33, 0.5);
+    box-shadow: inset 0 0 0 0.1px #555;
     cursor: pointer;
     position: relative;
 }
+
 span.cell-qty {
     position: absolute;
     right: 4px;
@@ -447,9 +521,11 @@ span.cell-qty {
     line-height: 1;
     pointer-events: none;
 }
+
 div.cell:hover {
-    filter: brightness(1.3);
+    background-color: rgba(70, 70, 70, 0.5);
 }
+
 img.cell-icon {
     width: 50px;
     height: 50px;

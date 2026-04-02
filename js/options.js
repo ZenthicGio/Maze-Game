@@ -30,12 +30,16 @@ function difficulty(type) {// Seleziona la difficoltÃ  modificando la velocit�
         perk.cost.bullets.counter = 175;
         perk.cost.bullets.damage = 700;
         perk.cost.bullets.speed = 125;
+        perk.cost.items.mde = 450;
+        perk.cost.items.lbe = 200;
         perk.stats.player.health = 0;
         perk.stats.player.stamina = 0;
         perk.stats.player.speed = 0;
         perk.stats.bullets.counter = 0;
         perk.stats.bullets.damage = 0;
         perk.stats.bullets.speed = 0;
+        perk.stats.items.mde = 0;
+        perk.stats.items.lbe = 0;
         levelCompleteReward = 100;
         generateMaze();
     }
@@ -55,12 +59,16 @@ function difficulty(type) {// Seleziona la difficoltÃ  modificando la velocit�
         perk.cost.bullets.counter = 350;
         perk.cost.bullets.damage = 1400;
         perk.cost.bullets.speed = 350;
+        perk.cost.items.mde = 900;
+        perk.cost.items.lbe = 400;
         perk.stats.player.health = 0;
         perk.stats.player.stamina = 0;
         perk.stats.player.speed = 0;
         perk.stats.bullets.counter = 0;
         perk.stats.bullets.damage = 0;
         perk.stats.bullets.speed = 0;
+        perk.stats.items.mde = 0;
+        perk.stats.items.lbe = 0;
         levelCompleteReward = 200
         generateMaze();
     }
@@ -80,12 +88,16 @@ function difficulty(type) {// Seleziona la difficoltÃ  modificando la velocit�
         perk.cost.bullets.counter = 700;
         perk.cost.bullets.damage = 2400;
         perk.cost.bullets.speed = 700;
+        perk.cost.items.mde = 1800;
+        perk.cost.items.lbe = 800;
         perk.stats.player.health = 0;
         perk.stats.player.stamina = 0;
         perk.stats.player.speed = 0;
         perk.stats.bullets.counter = 0;
         perk.stats.bullets.damage = 0;
         perk.stats.bullets.speed = 0;
+        perk.stats.items.mde = 0;
+        perk.stats.items.lbe = 0;
         levelCompleteReward = 400
         generateMaze();
     }
@@ -105,12 +117,16 @@ function difficulty(type) {// Seleziona la difficoltÃ  modificando la velocit�
         perk.cost.bullets.counter = 1400;
         perk.cost.bullets.damage = 4800;
         perk.cost.bullets.speed = 1400;
+        perk.cost.items.mde = 3600;
+        perk.cost.items.lbe = 1600;
         perk.stats.player.health = 0;
         perk.stats.player.stamina = 0;
         perk.stats.player.speed = 0;
         perk.stats.bullets.counter = 0;
         perk.stats.bullets.damage = 0;
         perk.stats.bullets.speed = 0;
+        perk.stats.items.mde = 0;
+        perk.stats.items.lbe = 0;
         levelCompleteReward = 800
         generateMaze();
     }
@@ -563,12 +579,14 @@ function playerStats() {
     INVENTORY.style.display = "none";
     PAUSE_MENU.style.display = "flex";
     PAUSE_MENU.innerHTML = `
-    <div class="menu-box">
+    <div class="menu-box-stats">
         <a class="title">Player Stats</a>
-        <div class="menu-option">
+        <div class="menu-option-stats">
             <div class="flex">
-                <a class="sec">Health &nbsp</a>
-                <a id="health" class="sec"></a>
+                <a class="sec left fit-text">Health</a>
+                <a id="health" class="sec right fit-text"></a>
+                <a id="healthLVL" class="absolute-right"></a>
+                <a id="healthPLUS" class="absolute-left"></a>
             </div>
             <div class="slot-row">
                 <table class="health-bar">
@@ -590,8 +608,10 @@ function playerStats() {
                 </a>
             </div>
             <div class="flex">
-                <a class="sec">Stamina &nbsp</a>
-                <a id="stamina" class="sec"></a>
+                <a class="sec left fit-text">Stamina</a>
+                <a id="stamina" class="sec right fit-text"></a>
+                <a id="staminaLVL" class="absolute-right"></a>
+                <a id="staminaPLUS" class="absolute-left"></a>
             </div>
             <div class="slot-row">
                 <table class="stamina-bar">
@@ -613,8 +633,10 @@ function playerStats() {
                 </a>
             </div>
             <div class="flex">
-                <a class="sec">Speed &nbsp</a>
-                <a id="speed" class="sec"></a>
+                <a class="sec left fit-text">Speed</a>
+                <a id="speed" class="sec right fit-text"></a>
+                <a id="speedLVL" class="absolute-right"></a>
+                <a id="speedPLUS" class="absolute-left"></a>
             </div>
             <div class="slot-row">
                 <table class="speed-bar">
@@ -631,8 +653,10 @@ function playerStats() {
                 </a>
             </div>
             <div class="flex">
-                <a class="sec">Bullets &nbsp</a>
-                <a id="bullets" class="sec"></a>
+                <a class="sec left fit-text">Bullets</a>
+                <a id="bullets" class="sec right fit-text"></a>
+                <a id="bulletsLVL" class="absolute-right"></a>
+                <a id="bulletsPLUS" class="absolute-left"></a>
             </div>
             <div class="slot-row">
                 <table class="bullets-bar">
@@ -654,8 +678,10 @@ function playerStats() {
                 </a>
             </div>
             <div class="flex">
-                <a class="sec">Damage &nbsp</a>
-                <a id="damage" class="sec"></a>
+                <a class="sec left fit-text">Damage</a>
+                <a id="damage" class="sec right fit-text"></a>
+                <a id="damageLVL" class="absolute-right"></a>
+                <a id="damagePLUS" class="absolute-left"></a>
             </div>
             <div class="slot-row">
                 <table class="damage-bar">
@@ -668,8 +694,10 @@ function playerStats() {
                 </a>
             </div>
             <div class="flex">
-                <a class="sec">Bullets Speed &nbsp</a>
-                <a id="bullets-speed" class="sec"></a>
+                <a class="sec left fit-text">Bullets Speed</a>
+                <a id="bullets-speed" class="sec right fit-text"></a>
+                <a id="bspeedLVL" class="absolute-right"></a>
+                <a id="bspeedPLUS" class="absolute-left"></a>
             </div>
             <div class="slot-row">
                 <table class="bulletsspeed-bar">
@@ -690,6 +718,49 @@ function playerStats() {
                     <img src="icons/plus.png">
                 </a>
             </div>
+            <div class="flex">
+                <a class="sec left fit-text">Medkit Efficiency</a>
+                <a id="mde" class="sec right fit-text"></a>
+                <a id="mdeLVL" class="absolute-right"></a>
+                <a id="mdePLUS" class="absolute-left"></a>
+            </div>
+            <div class="slot-row">
+                <table class="medkit-efficiency">
+                    <tr>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                    </tr>
+                </table>
+                <a class="upgrade hoverable mdeplus" onclick="increaseMDE()">
+                    <img src="icons/plus.png">
+                </a>
+            </div>
+            <div class="flex">
+                <a class="sec left fit-text">Battery Efficiency</a>
+                <a id="lbe" class="sec right fit-text"></a>
+                <a id="lbeLVL" class="absolute-right"></a>
+                <a id="lbePLUS" class="absolute-left"></a>
+            </div>
+            <div class="slot-row">
+                <table class="battery-efficiency">
+                    <tr>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                        <td class="bar"></td>
+                    </tr>
+                </table>
+                <a class="upgrade hoverable lbeplus" onclick="increaseLBE()">
+                    <img src="icons/plus.png">
+                </a>
+            </div>
         </div>
     </div>
     `;
@@ -700,44 +771,95 @@ function playerStats() {
     paintPerkBar(".bullets-bar", perk.stats.bullets.counter, "rgb(3,0,192)", "rgb(1,0,47)");
     paintPerkBar(".damage-bar", perk.stats.bullets.damage, "rgb(200,0,0)", "rgb(47,0,0)");
     paintPerkBar(".bulletsspeed-bar", perk.stats.bullets.speed, "rgb(200,200,200)", "rgb(47,47,47)");
+    paintPerkBar(".medkit-efficiency", perk.stats.items.mde, "rgb(128,200,0)", "rgb(47,74,0)");
+    paintPerkBar(".battery-efficiency", perk.stats.items.lbe, "rgb(0, 255, 255)", "rgb(0,68,68)")
 
-    const btnH = document.querySelector(".healthplus");
-    const hudHealth = document.getElementById("health");
-    const btnS = document.querySelector(".staminaplus");
-    const hudStamina = document.getElementById("stamina");
-    const btnPS = document.querySelector(".playerspeedplus");
-    const hudSpeed = document.getElementById("speed");
-    const btnB = document.querySelector(".bulletsplus");
-    const hudBullets = document.getElementById("bullets");
-    const btnD = document.querySelector(".damageplus");
-    const hudDamage = document.getElementById("damage");
-    const btnBS = document.querySelector(".bulletsspeedplus");
-    const hudBulletsSpeed = document.getElementById("bullets-speed");
+    const btnH = document.querySelector(".healthplus"),
+        hudHealth = document.getElementById("health"),
+        healthLVL = document.getElementById("healthLVL"),
+        healthPLUS = document.getElementById("healthPLUS"),
+        btnS = document.querySelector(".staminaplus"),
+        hudStamina = document.getElementById("stamina"),
+        staminaLVL = document.getElementById("staminaLVL"),
+        staminaPLUS = document.getElementById("staminaPLUS"),
+        btnPS = document.querySelector(".playerspeedplus"),
+        hudSpeed = document.getElementById("speed"),
+        speedLVL = document.getElementById("speedLVL"),
+        speedPLUS = document.getElementById("speedPLUS"),
+        btnB = document.querySelector(".bulletsplus"),
+        hudBullets = document.getElementById("bullets"),
+        bulletsLVL = document.getElementById("bulletsLVL"),
+        bulletsPLUS = document.getElementById("bulletsPLUS"),
+        btnD = document.querySelector(".damageplus"),
+        hudDamage = document.getElementById("damage"),
+        damageLVL = document.getElementById("damageLVL"),
+        damagePLUS = document.getElementById("damagePLUS"),
+        btnBS = document.querySelector(".bulletsspeedplus"),
+        hudBulletsSpeed = document.getElementById("bullets-speed"),
+        bspeedLVL = document.getElementById("bspeedLVL"),
+        bspeedPLUS = document.getElementById("bspeedPLUS"),
+        btnMDE = document.querySelector(".mdeplus"),
+        hudMDE = document.getElementById("mde"),
+        mdeLVL = document.getElementById("mdeLVL"),
+        mdePLUS = document.getElementById("mdePLUS"),
+        btnLBE = document.querySelector(".lbeplus"),
+        hudLBE = document.getElementById("lbe"),
+        lbeLVL = document.getElementById("lbeLVL"),
+        lbePLUS = document.getElementById("lbePLUS"),
+        fit_text = document.querySelectorAll(".fit-text");
 
     btnH.style.display = (score >= perk.cost.player.health + perk.stats.player.health * 75 && perk.stats.player.health < 10) ? "block" : "none"; //
     hudHealth.style.color = (score >= perk.cost.player.health + perk.stats.player.health * 75 && perk.stats.player.health < 10) ? "rgb(0,255,0)" : "rgb(255,0,0)";
     hudHealth.textContent = perk.stats.player.health < 10 ? `${score}/${perk.cost.player.health + perk.stats.player.health * 75}` : "MAX";
+    healthLVL.textContent = "Lv." + perk.stats.player.health;
+    healthPLUS.textContent = "+" + ((((3 + (perk.stats.player.health)) * 100) / 3) - 100).toFixed(1) + "%";
 
     btnS.style.display = (score >= perk.cost.player.stamina + perk.stats.player.stamina * 75 && perk.stats.player.stamina < 10) ? "block" : "none"; //
     hudStamina.style.color = (score >= perk.cost.player.stamina + perk.stats.player.stamina * 75 && perk.stats.player.stamina < 10) ? "rgb(0,255,0)" : "rgb(255,0,0)";
     hudStamina.textContent = perk.stats.player.stamina < 10 ? `${score}/${perk.cost.player.stamina + perk.stats.player.stamina * 75}` : "MAX";
+    staminaLVL.textContent = "Lv." + perk.stats.player.stamina;
+    staminaPLUS.textContent = "-" + stamina.drain + "%";
 
     btnPS.style.display = (score >= perk.cost.player.speed + perk.stats.player.speed * 90 && perk.stats.player.speed < 5) ? "block" : "none"; // total 7700
     hudSpeed.style.color = (score >= perk.cost.player.speed + perk.stats.player.speed * 90 && perk.stats.player.speed < 5) ? "rgb(0,255,0)" : "rgb(255,0,0)";
     hudSpeed.textContent = perk.stats.player.speed < 5 ? `${score}/${perk.cost.player.speed + perk.stats.player.speed * 90}` : "MAX";
+    speedLVL.textContent = "Lv." + perk.stats.player.speed;
+    speedPLUS.textContent = "+" + ((((1.2 + (perk.stats.player.speed / 10)) * 100) / 1.2) - 100).toFixed(1) + "%";
 
     btnB.style.display = (score >= perk.cost.bullets.counter + perk.stats.bullets.counter * 85 && perk.stats.bullets.counter < 10) ? "block" : "none"; // total 6600
     hudBullets.style.color = (score >= perk.cost.bullets.counter + perk.stats.bullets.counter * 85 && perk.stats.bullets.counter < 10) ? "rgb(0,255,0)" : "rgb(255,0,0)";
     hudBullets.textContent = perk.stats.bullets.counter < 10 ? `${score}/${perk.cost.bullets.counter + perk.stats.bullets.counter * 85}` : "MAX";
+    bulletsLVL.textContent = "Lv." + perk.stats.bullets.counter;
+    bulletsPLUS.textContent = "+" + perk.stats.bullets.counter;
 
     btnD.style.display = (score >= perk.cost.bullets.damage && perk.stats.bullets.damage < 1) ? "block" : "none";
     hudDamage.style.color = (score >= perk.cost.bullets.damage && perk.stats.bullets.damage < 1) ? "rgb(0,255,0)" : "rgb(255,0,0)";
     hudDamage.textContent = perk.stats.bullets.damage < 1 ? `${score}/${perk.cost.bullets.damage}` : "MAX";
+    damageLVL.textContent = "Lv." + perk.stats.bullets.damage;
+    damagePLUS.textContent = "x" + perk.stats.bullets.damage * 2;
 
     btnBS.style.display = (score >= perk.cost.bullets.speed + perk.stats.bullets.speed * 95 && perk.stats.bullets.speed < 10) ? "block" : "none";
     hudBulletsSpeed.style.color = (score >= perk.cost.bullets.speed + perk.stats.bullets.speed * 95 && perk.stats.bullets.speed < 10) ? "rgb(0,255,0)" : "rgb(255,0,0)";
     hudBulletsSpeed.textContent = perk.stats.bullets.speed < 10 ? `${score}/${perk.cost.bullets.speed + perk.stats.bullets.speed * 95}` : "MAX";
+    bspeedLVL.textContent = "Lv." + perk.stats.bullets.speed;
+    bspeedPLUS.textContent = "+" + perk.stats.bullets.speed * 12.5 + "%";
 
+    btnMDE.style.display = (score >= perk.cost.items.mde + perk.stats.items.mde * 225 && perk.stats.items.mde < 3) ? "block" : "none";
+    hudMDE.style.color = (score >= perk.cost.items.mde + perk.stats.items.mde * 225 && perk.stats.items.mde < 3) ? "rgb(0,255,0)" : "rgb(255,0,0)";
+    hudMDE.textContent = perk.stats.items.mde < 3 ? `${score}/${perk.cost.items.mde + perk.stats.items.mde * 225}` : "MAX";
+    mdeLVL.textContent = "Lv." + perk.stats.items.mde;
+    mdePLUS.textContent = "+" + (perk.stats.items.mde + 1);
+
+    btnLBE.style.display = (score >= perk.cost.items.lbe + perk.stats.items.lbe * 90 && perk.stats.items.lbe < 10) ? "block" : "none";
+    hudLBE.style.color = (score >= perk.cost.items.lbe + perk.stats.items.lbe * 90 && perk.stats.items.lbe < 10) ? "rgb(0,255,0)" : "rgb(255,0,0)";
+    hudLBE.textContent = perk.stats.items.lbe < 10 ? `${score}/${perk.cost.items.lbe + perk.stats.items.lbe * 90}` : "MAX";
+    lbeLVL.textContent = "Lv." + perk.stats.items.lbe;
+    lbePLUS.textContent = "-" + `${perk.stats.items.lbe * 4.5}` + "%";
+
+
+    fit_text.forEach(el => {
+        fitText(el)
+    })
     soundEvent();
 }
 function playerInventory() {
@@ -800,7 +922,7 @@ function useInventorySlot(slotIndex) {
     let used = false;
 
     if (itemName === "medkit") {
-        if (player.hit > 0) player.hit--;
+        if (player.hit > 0) player.hit = player.hit - (1 + perk.stats.items.mde);
         medSound.currentTime = 0;
         medSound.playbackRate = 1.5;
         medSound.play();
@@ -840,13 +962,15 @@ function pauseMenu() {
                 <a class="option hoverable sec" onclick="settings(PAUSE_MENU)">Settings</a>
                 <a class="option hoverable sec" onclick="stats(PAUSE_MENU)">Stats</a>
                 <a class="option hoverable sec" onclick="help(PAUSE_MENU)">Help</a>
-                <a class="option hoverable sec" onclick="toMainMenu(); generateMaze(); resetPlayer()">Main Menu</a>
+                <a class="option hoverable sec" onclick="toMainMenu(); generateMaze(); resetPlayer(); resetPlayerStats()">Main Menu</a>
             </div>
         </div>
     `;
     soundEvent();
 }
 function mainMenu() {
+    isPauseMenu = false;
+    isStatsMenu = false
     MAIN_MENU.style.display = "flex";
     MAIN_MENU.innerHTML = `
         <div class="menu-box">
