@@ -620,7 +620,7 @@ File:
   -maze.css
   -new text.js dynamic management of text dimension
 
-  ________________________________________V5.2.1.0_________________________________________
+________________________________________V5.2.1.0_________________________________________
 
 Change:
   -Fog of war now has perk.
@@ -629,3 +629,16 @@ Change:
 Fix:
   -Player will no longer have extra HP after picking up medkit improved by perks.
   -Game save now save Medkit Efficiency and Laser Battery Efficiency perk status
+
+________________________________________V5.2.2.0_________________________________________
+
+Change:
+  -Custom keybind now is possible.
+  -"P" key no longer pause the game
+
+Edit:
+  -Updated Perks otion.
+  -Ease-in-out speed of initial page increased.
+
+WIP: Working on mouse keybind
+WARN: DO NOT TRY TO KEYBIND MOUSE, ACTUALLY IS NOT WORKING AND YOU RISK TO BUG THE GAME.

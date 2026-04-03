@@ -154,10 +154,10 @@ function wasdOnly(deltaTime) {
     let dirX = 0;
     let dirY = 0;
 
-    if (keys["ArrowUp"]) dirY -= 1;
-    if (keys["ArrowDown"]) dirY += 1;
-    if (keys["ArrowLeft"]) dirX -= 1;
-    if (keys["ArrowRight"]) dirX += 1;
+    if (keys[upKeyValue]) dirY -= 1;
+    if (keys[downKeyValue]) dirY += 1;
+    if (keys[leftKeyValue]) dirX -= 1;
+    if (keys[rightKeyValue]) dirX += 1;
 
     let length = Math.sqrt(dirX ** 2 + dirY ** 2);
     if (length !== 0) {
@@ -193,19 +193,19 @@ function mouseDirection(deltaTime) {
     player.angle = Math.atan2(dy, dx);
 
     // Input tastiera + controllo direzione con mouse
-    if (keys["KeyW"]) {
+    if (keys[upKeyValue]) {
         moveX += Math.cos(player.angle);
         moveY += Math.sin(player.angle);
     }
-    if (keys["KeyS"]) {
+    if (keys[downKeyValue]) {
         moveX -= Math.cos(player.angle);
         moveY -= Math.sin(player.angle);
     }
-    if (keys["KeyA"]) {
+    if (keys[leftKeyValue]) {
         moveX += Math.cos(player.angle - Math.PI / 2);
         moveY += Math.sin(player.angle - Math.PI / 2);
     }
-    if (keys["KeyD"]) {
+    if (keys[rightKeyValue]) {
         moveX -= Math.cos(player.angle - Math.PI / 2);
         moveY -= Math.sin(player.angle - Math.PI / 2);
     }
@@ -229,10 +229,10 @@ function wasdDirectionMouseAim(deltaTime) {
     let dirX = 0;
     let dirY = 0;
 
-    if (keys["KeyW"]) dirY -= 1;
-    if (keys["KeyS"]) dirY += 1;
-    if (keys["KeyA"]) dirX -= 1;
-    if (keys["KeyD"]) dirX += 1;
+    if (keys[upKeyValue]) dirY -= 1;
+    if (keys[downKeyValue]) dirY += 1;
+    if (keys[leftKeyValue]) dirX -= 1;
+    if (keys[rightKeyValue]) dirX += 1;
 
     let length = Math.hypot(dirX, dirY);
     if (length !== 0) {
@@ -262,9 +262,22 @@ function setMovement(type) {
         sValue = "↓";
         aValue = "←";
         dValue = "→";
-        shootKeyValue = "Space";
+        shootValue = "Space";
+        runValue = "LShift";
+        perkValue = "C";
+        inventoryValue = "I";
         weaponSwitchValue = "R";
         directionControlValue = "Analog";
+
+        upKeyValue = "ArrowUp";
+        downKeyValue = "ArrowDown";
+        leftKeyValue = "ArrowLeft";
+        rightKeyValue = "ArrowRight";
+        runKeyValue = "ShiftLeft";
+        shootKeyValue = "Space";
+        inventoryKeyValue = "KeyI";
+        perkKeyValue = "KeyC";
+        weaponSwitchKeyValue = "KeyR";
     } else if (type === "mousedirection") {
         wasdonly = false;
         mousedirection = true;
@@ -273,9 +286,22 @@ function setMovement(type) {
         sValue = "S";
         aValue = "A";
         dValue = "D";
-        shootKeyValue = "LMB";
+        shootValue = "LMB";
+        runValue = "LShift";
+        perkValue = "C";
+        inventoryValue = "I";
         weaponSwitchValue = "RMB";
         directionControlValue = "Mouse";
+
+        upKeyValue = "KeyW";
+        downKeyValue = "KeyS";
+        leftKeyValue = "KeyA";
+        rightKeyValue = "KeyD";
+        runKeyValue = "ShiftLeft";
+        shootKeyValue = "Space";
+        inventoryKeyValue = "KeyI";
+        perkKeyValue = "KeyC";
+        weaponSwitchKeyValue = "2";
     } else if (type === "wasddirectionmouseaim") {
         wasdonly = false;
         mousedirection = false;
@@ -284,9 +310,22 @@ function setMovement(type) {
         sValue = "S";
         aValue = "A";
         dValue = "D";
-        shootKeyValue = "LMB";
+        shootValue = "LMB";
+        runValue = "LShift";
+        perkValue = "C";
+        inventoryValue = "I";
         weaponSwitchValue = "RMB";
         directionControlValue = "Mouse";
+
+        upKeyValue = "KeyW";
+        downKeyValue = "KeyS";
+        leftKeyValue = "KeyA";
+        rightKeyValue = "KeyD";
+        runKeyValue = "ShiftLeft";
+        shootKeyValue = "Space";
+        inventoryKeyValue = "KeyI";
+        perkKeyValue = "KeyC";
+        weaponSwitchKeyValue = "2";
     }
     movementSelected = true;
 }
@@ -321,7 +360,7 @@ function keysOption(INDEX) {
             <div class="menu-option">
                     <a class="option hoverable return" onclick="${menuTypeChange}">← Return</a>
             </div>
-            <table class="subLegenda">
+            <table class="subLegenda" tabindex="-1">
                 <thead>
                     <tr>
                         <th>Action</th>
@@ -331,43 +370,43 @@ function keysOption(INDEX) {
                 <tbody>
                     <tr>
                         <td>Up</td>
-                        <td id="up"></td>
+                        <td ondblclick="keybind(this, function(k) {upKeyValue = k}, function(v) {wValue = v})" id="up" style="cursor: pointer;"></td>
                     </tr>
                     <tr>
                         <td>Down</td>
-                        <td id="down"></td>
+                        <td ondblclick="keybind(this, function(k) {downKeyValue = k}, function(v) {sValue = v})" id="down" style="cursor: pointer;"></td>
                     </tr>
                     <tr>
                         <td>Left</td>
-                        <td id="left"></td>
+                        <td ondblclick="keybind(this, function(k) {leftKeyValue = k}, function(v) {aValue = v})" id="left" style="cursor: pointer;"></td>
                     </tr>
                     <tr>
                         <td>Right</td>
-                        <td id="right"></td>
+                        <td ondblclick="keybind(this, function(k) {rightKeyValue = k}, function(v) {dValue = v})" id="right" style="cursor: pointer;"></td>
                     </tr>
                     <tr>
                         <td>Run</td>
-                        <td>RShift, LShift</td>
+                        <td ondblclick="keybind(this, function(k) {runKeyValue = k}, function(v) {runValue = v})" id="run" style="cursor: pointer;"></td>
                     </tr>
                     <tr>
                         <td>Pause</td>
-                        <td>P, Esc</td>
+                        <td>Esc</td>
                     </tr>
                     <tr>
-                        <td>Perk Tab</td>
-                        <td>C</td>
+                        <td>Perk Menu</td>
+                        <td ondblclick="keybind(this, function(k) {perkKeyValue = k}, function(v) {perkValue = v})" id="perk" style="cursor: pointer;"></td>
                     </tr>
                     <tr>
                         <td>Inventory</td>
-                        <td>I</td>
+                        <td ondblclick="keybind(this, function(k) {inventoryKeyValue = k}, function(v) {inventoryValue = v})" id="inventory" style="cursor: pointer;"></td>
                     </tr>
                     <tr>
                         <td>Shoot</td>
-                        <td id="shoot"></td>
+                        <td ondblclick="keybind(this, function(k) {shootKeyValue = k}, function(v) {shootValue = v})" id="shoot" style="cursor: pointer;"></td>
                     </tr>
                     <tr>
                         <td>Weapon Switch</td>
-                        <td id="weaponkey"></td>
+                        <td ondblclick="keybind(this, function(k) {weaponSwitchKeyValue = k}, function(v) {weaponSwitchValue = v})" id="weaponkey" style="cursor: pointer;"></td>
                     </tr>
                     <tr>
                         <td>Direction Control</td>
@@ -385,18 +424,25 @@ function keysOption(INDEX) {
         </div>
     </div>
     `;
-    const w = document.getElementById("up"),
-        s = document.getElementById("down"),
-        a = document.getElementById("left"),
-        d = document.getElementById("right"),
+    const up = document.getElementById("up"),
+        left = document.getElementById("left"),
+        down = document.getElementById("down"),
+        right = document.getElementById("right"),
+        run = document.getElementById("run"),
+        perk = document.getElementById("perk"),
+        inventory = document.getElementById("inventory"),
         shootKey = document.getElementById("shoot"),
         weaponSwitch = document.getElementById("weaponkey"),
         directionControl = document.getElementById("directionControl");
-    w.textContent = wValue;
-    a.textContent = aValue;
-    s.textContent = sValue;
-    d.textContent = dValue;
-    shootKey.textContent = shootKeyValue;
+
+    up.textContent = wValue;
+    left.textContent = aValue;
+    down.textContent = sValue;
+    right.textContent = dValue;
+    run.textContent = runValue;
+    perk.textContent = perkValue;
+    inventory.textContent = inventoryValue;
+    shootKey.textContent = shootValue;
     weaponSwitch.textContent = weaponSwitchValue;
     directionControl.textContent = directionControlValue;
     soundEvent();
@@ -464,32 +510,47 @@ function perks(INDEX) {
                 <tr>
                     <td>Health</td>
                     <td>10</td>
-                    <td>Increase player health by 1 for each point.</td>
+                    <td>Increase player health by +33,3% for each level.</td>
                 </tr>
                 <tr>
                     <td>Stamina</td>
                     <td>10</td>
-                    <td>Decrease stamina drain by 0.2 for each point.</td>
+                    <td>Decrease stamina consumption by -2% for each level.</td>
                 </tr>
                 <tr>
                     <td>Speed</td>
                     <td>5</td>
-                    <td>Increase player speed by 0.1 for each point.</td>
+                    <td>Increase player speed by +8.3% for each level.</td>
                 </tr>
                 <tr>
                     <td>Bullets</td>
                     <td>10</td>
-                    <td>Increase magazine capacitor by 1 for each point.</td>
+                    <td>Increase magazine capacitor by 1 for each level.</td>
                 </tr>
                 <tr>
                     <td>Damage</td>
                     <td>1</td>
-                    <td>Bullets remove 2 point from enemies health.</td>
+                    <td>Bullets double the damage to enemies.</td>
                 </tr>
                 <tr>
                     <td>Bullets Speed</td>
                     <td>10</td>
-                    <td>Increase bullets speed by 0.5 for each point.</td>
+                    <td>Increase bullets speed by +12.5% for each level.</td>
+                </tr>
+                <tr>
+                    <td>Medkit Efficiency</td>
+                    <td>3</td>
+                    <td>Increase HP restore by +1 for each level</td>
+                </tr>
+                <tr>
+                    <td>Battery Efficiency</td>
+                    <td>10</td>
+                    <td>Reduce battery consumption by -4.5% for each level</td>
+                </tr>
+                <tr>
+                    <td>View Range</td>
+                    <td>10</td>
+                    <td>Increase view range by +10.8% for each level</td>
                 </tr>
             </table>
         </div>
@@ -970,9 +1031,9 @@ function useInventorySlot(slotIndex) {
 
     if (itemName === "medkit") {
         if (player.hit > 0) {
-                if (player.hit >= 1 + perk.stats.items.mde) player.hit = player.hit - (1 + perk.stats.items.mde);
-                else player.hit = 0;
-            };
+            if (player.hit >= 1 + perk.stats.items.mde) player.hit = player.hit - (1 + perk.stats.items.mde);
+            else player.hit = 0;
+        };
         medSound.currentTime = 0;
         medSound.playbackRate = 1.5;
         medSound.play();

@@ -175,7 +175,29 @@ async function saveData(filename) {
             wasdonly,
             mousedirection,
             wasddirectionmouseaim,
-            movementSelected
+            movementSelected,
+            keybinds: {
+                upKeyValue,
+                downKeyValue,
+                leftKeyValue,
+                rightKeyValue,
+                runKeyValue,
+                shootKeyValue,
+                weaponSwitchKeyValue,
+                inventoryKeyValue,
+                perkKeyValue,
+
+                wValue,
+                sValue,
+                aValue,
+                dValue,
+                runValue,
+                perkValue,
+                inventoryValue,
+                shootValue,
+                weaponSwitchValue,
+                directionControlValue
+            }
         },
 
         stats: {
@@ -479,6 +501,29 @@ function applyData(data) {
         if (wasdonly) setMovement("wasdonly");
         else if (mousedirection) setMovement("mousedirection");
         else if (wasddirectionmouseaim) setMovement("wasddirectionmouseaim");
+
+        if (data.controls.keybinds) {
+            upKeyValue = data.controls.keybinds.upKeyValue ?? upKeyValue;
+            downKeyValue = data.controls.keybinds.downKeyValue ?? downKeyValue;
+            leftKeyValue = data.controls.keybinds.leftKeyValue ?? leftKeyValue;
+            rightKeyValue = data.controls.keybinds.rightKeyValue ?? rightKeyValue;
+            runKeyValue = data.controls.keybinds.runKeyValue ?? runKeyValue;
+            shootKeyValue = data.controls.keybinds.shootKeyValue ?? shootKeyValue;
+            weaponSwitchKeyValue = data.controls.keybinds.weaponSwitchKeyValue ?? weaponSwitchKeyValue;
+            inventoryKeyValue = data.controls.keybinds.inventoryKeyValue ?? inventoryKeyValue;
+            perkKeyValue = data.controls.keybinds.perkKeyValue ?? perkKeyValue;
+
+            wValue = data.controls.keybinds.wValue ?? wValue;
+            sValue = data.controls.keybinds.sValue ?? sValue;
+            aValue = data.controls.keybinds.aValue ?? aValue;
+            dValue = data.controls.keybinds.dValue ?? dValue;
+            runValue = data.controls.keybinds.runValue ?? runValue;
+            perkValue = data.controls.keybinds.perkValue ?? perkValue;
+            inventoryValue = data.controls.keybinds.inventoryValue ?? inventoryValue;
+            shootValue = data.controls.keybinds.shootValue ?? shootValue;
+            weaponSwitchValue = data.controls.keybinds.weaponSwitchValue ?? weaponSwitchValue;
+            directionControlValue = data.controls.keybinds.directionControlValue ?? directionControlValue;
+        }
     }
 
     if (data.stats) {

@@ -17,140 +17,145 @@ gameCanvas.addEventListener("contextmenu", function (e) {
 let isPauseMenu = false;
 let isStatsMenu = false;
 let isInventoryMenu = false;
+
 document.addEventListener("keydown", e => {
-
-    if (e.repeat) return;
-    const isPauseKey = e.code === "KeyP" || e.code === "Escape";
-    const cKey = e.code === "KeyC";
-    const iKey = e.code === "KeyI";
-    if (isConsoleOn) {
-        if (e.code === "Escape") {
-            resume();
-            isConsoleOn = false;
-            cmd.hidden = true;
-            return;
-        }
-        if (e.code !== "Enter") return;
-    }
-    if (iKey && !isMainMenu && !isPauseMenu) {
-        if (isInventoryMenu) {
-            resume();
-            return;
-        }
-
-        // Switch Stats -> Inventory
-        isStatsMenu = false;
-        playerStatsBool = false;
-
-        isInventory = true;
-        isInventoryMenu = true;
-        isPaused = true;
-        playerInventory();
-        return;
-    }
-
-    if (cKey && !isMainMenu && !isPauseMenu) {
-        if (isStatsMenu) {
-            resume();
-            return;
-        }
-
-        // Switch Inventory -> Stats
-        isInventory = false;
-        isInventoryMenu = false;
-
-        playerStatsBool = true;
-        isStatsMenu = true;
-        isPaused = true;
-        playerStats();
-        return;
-    }
-
-    if (e.code === "ShiftLeft" || e.code === "ShiftRight") {
-        if (command.unlimitedStamina || stamina.length > 0.001) isRunning = true;
-        else isRunning = false;
-    };
-
-    if (isPauseKey && !isConsoleOn) { // Keydown per la pausa del gioco (p, P o Esc)
-        if (isStatsMenu) {
-            resume();
-            return;
-        }
-        if (isInventoryMenu) {
-            resume();
-            return;
-        }
-        if (isMainMenu) {
-        } else {
-            isPauseMenu = !isPauseMenu;
-            isPaused = !isPaused;
-            isRunning = false;
-            if (isHolding) stopLaserFiring();
-            keys[e.code] = false;
-            if (isPaused) pauseMenu();
-            playerStatsBool = false;
-            isInventory = false
-            return;
-        }
-    }
-
-    if (e.code === "Backquote") {
-        e.preventDefault();
-        if (!isPaused) {
-            isPaused = true;
-            isConsoleOn = true;
-        } else if (isPaused && !isConsoleOn) {
-            isConsoleOn = true;
-        } else {
-            resume();
-            isConsoleOn = false;
-        }
+    if (!isKeybinding) {
+        if (e.repeat) return;
+        const isPauseKey = e.code === "Escape";
+        const perkKey = e.code === perkKeyValue;
+        const inventoryKey = e.code === inventoryKeyValue;
+        const runKey = e.code === runKeyValue;
+        const shotKey = e.code === shootKeyValue;
+        const switchWeaponsKey = e.code === weaponSwitchKeyValue;
         if (isConsoleOn) {
-            cmd.hidden = false;
-            cmd.focus();
-        } else cmd.hidden = true;
-    }
-
-    if (e.code === "Enter") {
-        if (isConsoleOn) {
-            resume();
-            isConsoleOn = false;
-            const psc = { ...command };
-            commands();
-            for (let i in command) {
-                if (command[i] !== psc[i]) {
-                }
+            if (e.code === "Escape") {
+                resume();
+                isConsoleOn = false;
+                cmd.hidden = true;
+                return;
             }
-            cmd.value = "";
-            cmd.hidden = true;
+            if (e.code !== "Enter") return;
         }
-    }
+        if (inventoryKey && !isMainMenu && !isPauseMenu) {
+            if (isInventoryMenu) {
+                resume();
+                return;
+            }
 
-    if (wasdonly) {
-        if (e.code === "KeyR") {
-            if (isHolding) stopLaserFiring();
-            if (modeIndex === 0) modeIndex = 1;
-            else if (modeIndex === 1) modeIndex = command.railgunMode && railgun.shotsLeft > 0 ? 2 : 0;
-            else if (modeIndex === 2) modeIndex = 1;
-            syncWeaponProfile();
+            // Switch Stats -> Inventory
+            isStatsMenu = false;
+            playerStatsBool = false;
+
+            isInventory = true;
+            isInventoryMenu = true;
+            isPaused = true;
+            playerInventory();
             return;
         }
-    }
 
-    keys[e.code] = true;
+        if (perkKey && !isMainMenu && !isPauseMenu) {
+            if (isStatsMenu) {
+                resume();
+                return;
+            }
 
-    if (e.code === "Space" && canShoot && wasdonly) {
-        if (isPaused) canShoot = false;
-        else {
-            const mode = modes[modeIndex];
-            if (mode === "pistol" || mode === "railgun") {
-                canShoot = false;
-                shoot();
-            } else if (mode === "laser") {
-                if (laserBattery > 0) {
-                    startLaserFiring()
-                } else if (laserBattery <= 0) {
-                    stopLaserFiring()
+            // Switch Inventory -> Stats
+            isInventory = false;
+            isInventoryMenu = false;
+
+            playerStatsBool = true;
+            isStatsMenu = true;
+            isPaused = true;
+            playerStats();
+            return;
+        }
+
+        if (runKey) {
+            if (command.unlimitedStamina || stamina.length > 0.001) isRunning = true;
+            else isRunning = false;
+        };
+
+        if (isPauseKey && !isConsoleOn) { // Keydown per la pausa del gioco (p, P o Esc)
+            if (isStatsMenu) {
+                resume();
+                return;
+            }
+            if (isInventoryMenu) {
+                resume();
+                return;
+            }
+            if (isMainMenu) {
+            } else {
+                isPauseMenu = !isPauseMenu;
+                isPaused = !isPaused;
+                isRunning = false;
+                if (isHolding) stopLaserFiring();
+                keys[e.code] = false;
+                if (isPaused) pauseMenu();
+                playerStatsBool = false;
+                isInventory = false
+                return;
+            }
+        }
+
+        if (e.code === "Backquote") {
+            e.preventDefault();
+            if (!isPaused) {
+                isPaused = true;
+                isConsoleOn = true;
+            } else if (isPaused && !isConsoleOn) {
+                isConsoleOn = true;
+            } else {
+                resume();
+                isConsoleOn = false;
+            }
+            if (isConsoleOn) {
+                cmd.hidden = false;
+                cmd.focus();
+            } else cmd.hidden = true;
+        }
+
+        if (e.code === "Enter") {
+            if (isConsoleOn) {
+                resume();
+                isConsoleOn = false;
+                const psc = { ...command };
+                commands();
+                for (let i in command) {
+                    if (command[i] !== psc[i]) {
+                    }
+                }
+                cmd.value = "";
+                cmd.hidden = true;
+            }
+        }
+
+        if (wasdonly) {
+            if (switchWeaponsKey) {
+                if (isHolding) stopLaserFiring();
+                if (modeIndex === 0) modeIndex = 1;
+                else if (modeIndex === 1) modeIndex = command.railgunMode && railgun.shotsLeft > 0 ? 2 : 0;
+                else if (modeIndex === 2) modeIndex = 1;
+                syncWeaponProfile();
+                return;
+            }
+        }
+
+        keys[e.code] = true;
+
+        if (shotKey && canShoot && wasdonly) {
+            if (isPaused) canShoot = false;
+            else {
+                const mode = modes[modeIndex];
+                if (mode === "pistol" || mode === "railgun") {
+                    canShoot = false;
+                    shoot();
+                } else if (mode === "laser") {
+                    if (laserBattery > 0) {
+                        startLaserFiring()
+                    } else if (laserBattery <= 0) {
+                        stopLaserFiring()
+                    }
                 }
             }
         }
@@ -158,10 +163,10 @@ document.addEventListener("keydown", e => {
 });
 document.addEventListener("keyup", e => {
     keys[e.code] = false;
-    if (e.code === "ShiftLeft" || e.code === "ShiftRight") {
-        isRunning = !!(keys["ShiftLeft"] || keys["ShiftRight"]);
+    if (e.code === runKeyValue) {
+        isRunning = !!(keys[runKeyValue]);
     }
-    if (e.code === "Space" && wasdonly) {
+    if (e.code === shootKeyValue && wasdonly) {
         canShoot = true;
         if (isHolding) stopLaserFiring();
         else isHolding = false;

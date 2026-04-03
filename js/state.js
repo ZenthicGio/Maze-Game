@@ -24,10 +24,11 @@ const pickupCounterEl = document.getElementById("pickupCounter"),
     GAME = document.getElementById("game"),
     START_MENU = document.getElementById("start-menu"),
     START_CLICK = document.getElementById("pulsingText"),
+    OVERLAY = document.getElementById("overlay"),
     INVENTORY = document.getElementById("inventory");
 
 // Salvataggio
-const SAVE_VERSION = "v5.2.1.0"
+const SAVE_VERSION = "v5.2.2.0"
 
 // Audio
 const shootSound = new Audio("SFX/shot.mp3"),
@@ -328,11 +329,28 @@ let wasdonly = true,
     mousedirection = false,
     wasddirectionmouseaim = false,
     movementSelected = false,
+    isKeybinding = false,
+
+    // KEYBIND
+    upKeyValue = "",
+    downKeyValue = "",
+    leftKeyValue = "",
+    rightKeyValue = "",
+    shootKeyValue = "",
+    weaponSwitchKeyValue = "",
+    inventoryKeyValue = "",
+    perkKeyValue = "",
+    runKeyValue = "",
+
+    // TABLE SHOWN
     wValue = "",
     sValue = "",
     aValue = "",
     dValue = "",
-    shootKeyValue = "",
+    runValue = "",
+    perkValue = "",
+    inventoryValue= "",
+    shootValue = "",
     weaponSwitchValue = "",
     directionControlValue = "",
     playerStatsBool = false;

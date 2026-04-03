@@ -450,3 +450,45 @@ function resetPlayerStats() {
     levelCompleted = 0;
     refreshScore();
 }
+function keybind(input, value, display) {
+    isKeybinding = true;
+    OVERLAY.style.display = "flex";
+
+    document.addEventListener("keydown", function (e) {
+        if (isKeybinding) {
+            if (e.code !== "Escape") {
+                value(e.code);
+                display(e.key.toUpperCase());
+                input.textContent = e.key.toUpperCase();
+            } else {
+                isKeybinding = false;
+                OVERLAY.style.display = "none";
+            }
+        }
+    }, { once: true });
+
+    document.addEventListener("keyup", function () {
+        if (isKeybinding) {
+            isKeybinding = false;
+            OVERLAY.style.display = "none";
+        }
+    }, { once: true });
+
+    document.addEventListener("mousedown", function (e) {
+        if (isKeybinding && (wasddirectionmouseaim || mousedirection)) {
+            if (e.button === 0) {
+                display("LMB");
+                input.textContent = "LMB";
+            } else if (e.button === 1) {
+                display("MMB");
+                input.textContent = "MMB";
+            } else if (e.button === 2) {
+                display("RMB");
+                input.textContent = "RMB";
+            }
+            value(e.button);
+            isKeybinding = false;
+            OVERLAY.style.display = "none";
+        }
+    }, { once: true });
+}
