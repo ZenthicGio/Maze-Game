@@ -630,7 +630,7 @@ Fix:
   -Player will no longer have extra HP after picking up medkit improved by perks.
   -Game save now save Medkit Efficiency and Laser Battery Efficiency perk status
 
-________________________________________V5.2.2.0_________________________________________
+______________________________________V5.2.2.0-beta______________________________________
 
 Change:
   -Custom keybind now is possible.
@@ -642,3 +642,12 @@ Edit:
 
 WIP: Working on mouse keybind
 WARN: DO NOT TRY TO KEYBIND MOUSE, ACTUALLY IS NOT WORKING AND YOU RISK TO BUG THE GAME.
+
+________________________________________V5.2.2.0_________________________________________
+
+Fix:
+  -Keybind overwrite with previous keybind
+  -Shoot key and weapon switch key now work properly
+
+Edit:
+  -Compatibility to mouse keybind

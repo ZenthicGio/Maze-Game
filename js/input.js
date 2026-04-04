@@ -130,20 +130,18 @@ document.addEventListener("keydown", e => {
             }
         }
 
-        if (wasdonly) {
-            if (switchWeaponsKey) {
-                if (isHolding) stopLaserFiring();
-                if (modeIndex === 0) modeIndex = 1;
-                else if (modeIndex === 1) modeIndex = command.railgunMode && railgun.shotsLeft > 0 ? 2 : 0;
-                else if (modeIndex === 2) modeIndex = 1;
-                syncWeaponProfile();
-                return;
-            }
+        if (switchWeaponsKey) {
+            if (isHolding) stopLaserFiring();
+            if (modeIndex === 0) modeIndex = 1;
+            else if (modeIndex === 1) modeIndex = command.railgunMode && railgun.shotsLeft > 0 ? 2 : 0;
+            else if (modeIndex === 2) modeIndex = 1;
+            syncWeaponProfile();
+            return;
         }
 
         keys[e.code] = true;
 
-        if (shotKey && canShoot && wasdonly) {
+        if (shotKey && canShoot) {
             if (isPaused) canShoot = false;
             else {
                 const mode = modes[modeIndex];
@@ -166,7 +164,7 @@ document.addEventListener("keyup", e => {
     if (e.code === runKeyValue) {
         isRunning = !!(keys[runKeyValue]);
     }
-    if (e.code === shootKeyValue && wasdonly) {
+    if (e.code === shootKeyValue) {
         canShoot = true;
         if (isHolding) stopLaserFiring();
         else isHolding = false;
@@ -185,40 +183,92 @@ gameCanvas.addEventListener("mousedown", e => {
     // Click LMB = 0
     // Click MMB = 1
     // Click RMB = 2
+    const perkButton = e.button === perkKeyValue;
+    const inventoryButton = e.button === inventoryKeyValue;
+    const runButton = e.button === runKeyValue;
+    const shotButton = e.button === shootKeyValue;
+    const switchWeaponsButton = e.button === weaponSwitchKeyValue;
     if (isConsoleOn) return;
+    if (!isKeybinding) {
 
-    if (e.button === 2) {
-        if (wasddirectionmouseaim || mousedirection) {
-            if (isHolding) stopLaserFiring();
-            if (modeIndex === 0) modeIndex = 1;
-            else if (modeIndex === 1) modeIndex = command.railgunMode && railgun.shotsLeft > 0 ? 2 : 0;
-            else if (modeIndex === 2) modeIndex = 1;
-            syncWeaponProfile();
+        if (inventoryButton && !isMainMenu && !isPauseMenu) {
+            if (isInventoryMenu) {
+                resume();
+                return;
+            }
+
+            // Switch Stats -> Inventory
+            isStatsMenu = false;
+            playerStatsBool = false;
+
+            isInventory = true;
+            isInventoryMenu = true;
+            isPaused = true;
+            playerInventory();
             return;
         }
-    }
 
-    const mode = modes[modeIndex];
-    if (e.button === 0 && (wasddirectionmouseaim || mousedirection) && canShoot) { // Click sinistro per sparare
-        if (isPaused) canShoot = false;
-        else {
-            if (mode === "laser") {
-                if (laserBattery > 0) {
-                    startLaserFiring()
-                } else if (laserBattery <= 0 && isHolding) {
-                    stopLaserFiring()
+        if (perkButton && !isMainMenu && !isPauseMenu) {
+            if (isStatsMenu) {
+                resume();
+                return;
+            }
+
+            // Switch Inventory -> Stats
+            isInventory = false;
+            isInventoryMenu = false;
+
+            playerStatsBool = true;
+            isStatsMenu = true;
+            isPaused = true;
+            playerStats();
+            return;
+        }
+
+        if (runButton) {
+            if (command.unlimitedStamina || stamina.length > 0.001) isRunning = true;
+            else isRunning = false;
+        };
+
+        if (switchWeaponsButton) {
+            if (wasddirectionmouseaim || mousedirection) {
+                if (isHolding) stopLaserFiring();
+                if (modeIndex === 0) modeIndex = 1;
+                else if (modeIndex === 1) modeIndex = command.railgunMode && railgun.shotsLeft > 0 ? 2 : 0;
+                else if (modeIndex === 2) modeIndex = 1;
+                syncWeaponProfile();
+                return;
+            }
+        }
+
+        keys[e.button] = true
+
+        const mode = modes[modeIndex];
+        if (shotButton && (wasddirectionmouseaim || mousedirection) && canShoot) { // Click sinistro per sparare
+            if (isPaused) canShoot = false;
+            else {
+                if (mode === "laser") {
+                    if (laserBattery > 0) {
+                        startLaserFiring()
+                    } else if (laserBattery <= 0 && isHolding) {
+                        stopLaserFiring()
+                    }
+                } else {
+                    canShoot = false;
+                    shoot();
                 }
-            } else {
-                canShoot = false;
-                shoot();
             }
         }
     }
 });
 document.addEventListener("mouseup", e => {
+    keys[e.button] = false;
     if (isConsoleOn) return;
 
-    if (e.button === 0 && (wasddirectionmouseaim || mousedirection)) {
+    if (e.button === runKeyValue) {
+        isRunning = !!(keys[runKeyValue]);
+    }
+    if (e.button === shootKeyValue && (wasddirectionmouseaim || mousedirection)) {
         canShoot = true;
         if (isHolding) stopLaserFiring();
         else isHolding = false;

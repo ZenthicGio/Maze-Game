@@ -449,46 +449,38 @@ function resetPlayerStats() {
     perkSpentScore = 0;
     levelCompleted = 0;
     refreshScore();
-}
+} let kbs = 0;
 function keybind(input, value, display) {
+    const s = ++kbs;
     isKeybinding = true;
     OVERLAY.style.display = "flex";
 
     document.addEventListener("keydown", function (e) {
-        if (isKeybinding) {
-            if (e.code !== "Escape") {
-                value(e.code);
-                display(e.key.toUpperCase());
-                input.textContent = e.key.toUpperCase();
-            } else {
-                isKeybinding = false;
-                OVERLAY.style.display = "none";
-            }
+        if (s !== kbs || !isKeybinding) return;
+        if (e.code === "Escape") {
+            isKeybinding = false;
+            OVERLAY.style.display = "none";
+            return;
         }
+        value(e.code);
+        const t = e.code === "Space" ? "SPACE" : e.key.toUpperCase();
+        display(t);
+        input.textContent = t;
     }, { once: true });
 
     document.addEventListener("keyup", function () {
-        if (isKeybinding) {
-            isKeybinding = false;
-            OVERLAY.style.display = "none";
-        }
+        if (s !== kbs || !isKeybinding) return;
+        isKeybinding = false;
+        OVERLAY.style.display = "none";
     }, { once: true });
 
     document.addEventListener("mousedown", function (e) {
-        if (isKeybinding && (wasddirectionmouseaim || mousedirection)) {
-            if (e.button === 0) {
-                display("LMB");
-                input.textContent = "LMB";
-            } else if (e.button === 1) {
-                display("MMB");
-                input.textContent = "MMB";
-            } else if (e.button === 2) {
-                display("RMB");
-                input.textContent = "RMB";
-            }
-            value(e.button);
-            isKeybinding = false;
-            OVERLAY.style.display = "none";
-        }
+        if (s !== kbs || !isKeybinding || !(wasddirectionmouseaim || mousedirection)) return;
+        const t = e.button === 0 ? "LMB" : e.button === 1 ? "MMB" : e.button === 2 ? "RMB" : ("MB" + e.button);
+        display(t);
+        input.textContent = t;
+        value(e.button);
+        isKeybinding = false;
+        OVERLAY.style.display = "none";
     }, { once: true });
 }

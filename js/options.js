@@ -298,10 +298,10 @@ function setMovement(type) {
         leftKeyValue = "KeyA";
         rightKeyValue = "KeyD";
         runKeyValue = "ShiftLeft";
-        shootKeyValue = "Space";
+        shootKeyValue = 0;
         inventoryKeyValue = "KeyI";
         perkKeyValue = "KeyC";
-        weaponSwitchKeyValue = "2";
+        weaponSwitchKeyValue = 2;
     } else if (type === "wasddirectionmouseaim") {
         wasdonly = false;
         mousedirection = false;
@@ -322,10 +322,10 @@ function setMovement(type) {
         leftKeyValue = "KeyA";
         rightKeyValue = "KeyD";
         runKeyValue = "ShiftLeft";
-        shootKeyValue = "Space";
+        shootKeyValue = 0;
         inventoryKeyValue = "KeyI";
         perkKeyValue = "KeyC";
-        weaponSwitchKeyValue = "2";
+        weaponSwitchKeyValue = 2;
     }
     movementSelected = true;
 }
@@ -354,7 +354,7 @@ function resume() {
 function keysOption(INDEX) {
     let menuTypeChange = isPaused && !isMainMenu ? "settings(PAUSE_MENU)" : "settings(MAIN_MENU)";
     INDEX.innerHTML = `
-    <div class="menu-box">
+    <div class="menu-box keys">
         <a class="title">Controls</a>
         <div tabindex="-1" class="legenda">
             <div class="menu-option">
@@ -370,23 +370,23 @@ function keysOption(INDEX) {
                 <tbody>
                     <tr>
                         <td>Up</td>
-                        <td ondblclick="keybind(this, function(k) {upKeyValue = k}, function(v) {wValue = v})" id="up" style="cursor: pointer;"></td>
+                        <td class="tdHoverable" ondblclick="keybind(this, function(k) {upKeyValue = k}, function(v) {wValue = v})" id="up"></td>
                     </tr>
                     <tr>
                         <td>Down</td>
-                        <td ondblclick="keybind(this, function(k) {downKeyValue = k}, function(v) {sValue = v})" id="down" style="cursor: pointer;"></td>
+                        <td class="tdHoverable" ondblclick="keybind(this, function(k) {downKeyValue = k}, function(v) {sValue = v})" id="down"></td>
                     </tr>
                     <tr>
                         <td>Left</td>
-                        <td ondblclick="keybind(this, function(k) {leftKeyValue = k}, function(v) {aValue = v})" id="left" style="cursor: pointer;"></td>
+                        <td class="tdHoverable" ondblclick="keybind(this, function(k) {leftKeyValue = k}, function(v) {aValue = v})" id="left"></td>
                     </tr>
                     <tr>
                         <td>Right</td>
-                        <td ondblclick="keybind(this, function(k) {rightKeyValue = k}, function(v) {dValue = v})" id="right" style="cursor: pointer;"></td>
+                        <td class="tdHoverable" ondblclick="keybind(this, function(k) {rightKeyValue = k}, function(v) {dValue = v})" id="right"></td>
                     </tr>
                     <tr>
                         <td>Run</td>
-                        <td ondblclick="keybind(this, function(k) {runKeyValue = k}, function(v) {runValue = v})" id="run" style="cursor: pointer;"></td>
+                        <td class="tdHoverable" ondblclick="keybind(this, function(k) {runKeyValue = k}, function(v) {runValue = v})" id="run"></td>
                     </tr>
                     <tr>
                         <td>Pause</td>
@@ -394,19 +394,19 @@ function keysOption(INDEX) {
                     </tr>
                     <tr>
                         <td>Perk Menu</td>
-                        <td ondblclick="keybind(this, function(k) {perkKeyValue = k}, function(v) {perkValue = v})" id="perk" style="cursor: pointer;"></td>
+                        <td class="tdHoverable" ondblclick="keybind(this, function(k) {perkKeyValue = k}, function(v) {perkValue = v})" id="perk"></td>
                     </tr>
                     <tr>
                         <td>Inventory</td>
-                        <td ondblclick="keybind(this, function(k) {inventoryKeyValue = k}, function(v) {inventoryValue = v})" id="inventory" style="cursor: pointer;"></td>
+                        <td class="tdHoverable" ondblclick="keybind(this, function(k) {inventoryKeyValue = k}, function(v) {inventoryValue = v})" id="inventory"></td>
                     </tr>
                     <tr>
                         <td>Shoot</td>
-                        <td ondblclick="keybind(this, function(k) {shootKeyValue = k}, function(v) {shootValue = v})" id="shoot" style="cursor: pointer;"></td>
+                        <td class="tdHoverable" ondblclick="keybind(this, function(k) {shootKeyValue = k}, function(v) {shootValue = v})" id="shoot"></td>
                     </tr>
                     <tr>
                         <td>Weapon Switch</td>
-                        <td ondblclick="keybind(this, function(k) {weaponSwitchKeyValue = k}, function(v) {weaponSwitchValue = v})" id="weaponkey" style="cursor: pointer;"></td>
+                        <td class="tdHoverable" ondblclick="keybind(this, function(k) {weaponSwitchKeyValue = k}, function(v) {weaponSwitchValue = v})" id="weaponkey"></td>
                     </tr>
                     <tr>
                         <td>Direction Control</td>
@@ -414,12 +414,10 @@ function keysOption(INDEX) {
                     </tr>
                 </tbody>
             </table><br>
-            <strong style="color: rgb(200,0,0); font-size: 18px">
+            <strong id="warn" style="color: rgb(200,0,0); font-size: 18px">
                 Player movement
                 axis is based on
                 mouse position
-                in case of
-                WASD + Mouse Direction
             </strong><br><br>
         </div>
     </div>
@@ -433,7 +431,10 @@ function keysOption(INDEX) {
         inventory = document.getElementById("inventory"),
         shootKey = document.getElementById("shoot"),
         weaponSwitch = document.getElementById("weaponkey"),
-        directionControl = document.getElementById("directionControl");
+        directionControl = document.getElementById("directionControl"),
+        warn = document.getElementById("warn");
+    
+    warn.style.display = mousedirection ? "block" : "none";
 
     up.textContent = wValue;
     left.textContent = aValue;

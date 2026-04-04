@@ -62,7 +62,7 @@ div.container {
     display: flex;
     flex-direction: column;
     font-size: 18px;
-    width: 190px;
+    width: 300px;
     height: auto;
     overflow-y: auto;
     margin-top: 10px;
@@ -73,27 +73,41 @@ div.menu-box-help::-webkit-scrollbar {
     display: none;
 }
 
-.subLegenda {
+p.subLegenda {
     position: relative;
     display: block;
     font-size: 16px;
 }
 
 table.subLegenda {
+    position: relative;
+    justify-self: center;
+    font-size: 16px;
     border-collapse: collapse;
     text-align: center;
+    table-layout: fixed;
+    outline: none;
+    width: 100%;
+    height: auto;
 }
 
 th,
 td {
     border: 1px solid darkgray;
+    width: 50%;
+    height: 35px
+}
+td.tdHoverable:hover {
+    cursor: pointer;
+    filter: brightness(1.2);
+    background-color: rgba(33, 33, 33, 0.5)
 }
 
 img.img {
     width: 16px;
     height: 16px;
     position: absolute;
-    left: 130px;
+    right: 98.5px;
     top: 20px
 }
 
@@ -142,7 +156,7 @@ div.menu-box {
     color: lightgray;
     width: 360px;
     height: auto;
-    max-height: 420px;
+    max-height: 640px;
     border-radius: 20px;
     background-color: rgba(16 16, 16, 0.8);
     z-index: 12;
@@ -452,6 +466,7 @@ table.fow {
     height: 8px;
     width: 300px;
     border-collapse: collapse;
+    outline: none;
 }
 
 td.bar {
