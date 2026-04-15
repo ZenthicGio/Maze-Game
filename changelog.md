@@ -651,3 +651,8 @@ Fix:
 
 Edit:
   -Compatibility to mouse keybind
+
+________________________________________V5.2.2.1_________________________________________
+
+Fix:
+  -Main menu background not showning
