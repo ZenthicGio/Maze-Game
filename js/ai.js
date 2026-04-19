@@ -450,6 +450,10 @@ function resetPlayer() { // Resetta il player quando ucciso, al cambio di livell
     player.angle = 0;
     trail = [];
 
+    if (bulletsMag < 4) {
+        bulletsMag = 4;
+    }
+
     respawnTimerBlock(safe);
     player.hit = 0;
 
